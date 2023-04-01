@@ -2,7 +2,7 @@ const express = require('express')
 var nodemailer = require('nodemailer');
 const {model}=require('mongoose')
 const app = express()
-
+//comment added
 const user=require("./models/register")
 const conn=require("./database");
 const details=require("./models/details")
