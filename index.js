@@ -128,7 +128,6 @@ app.post('/send',async (req,res)=>{
 
 
 app.get('/',(req,res)=>{
-
     res.render("register.ejs",{msg:""})
 })
 
