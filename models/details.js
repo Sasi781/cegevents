@@ -1,0 +1,52 @@
+const { Int32 } = require('mongodb');
+var mongoose=require('mongoose');
+const userSchema=new mongoose.Schema({
+    firstname:{
+        type:String,
+        required:true,
+    },
+    lastname:{
+        type:String,
+        required:true,
+    },
+    email:{
+        type:String,
+        required:true
+    },
+    phone:{
+        type:Number,
+        required:true
+    },
+    rollno:{
+        type:String,
+        required:true
+    },
+    dob:{
+        type:String,
+        required:true
+    },
+    college:{
+        type:String,
+        required:true
+    },
+    department:{
+        type:String,
+        required:true
+    },
+    year:{
+        type:String,
+        required:true
+    },
+    gender:{
+        type:String,
+        required:true
+    },
+    hostel:{
+        type:String,
+        required:true
+    },
+    img:{
+        type:String,
+    }
+});
+module.exports=User=mongoose.model("details",userSchema)
