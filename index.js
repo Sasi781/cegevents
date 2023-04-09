@@ -3,6 +3,9 @@ var nodemailer = require('nodemailer');
 const {model}=require('mongoose')
 const app = express()
 //comment added
+const excelJs = require("exceljs")
+var fs = require("fs")
+const xl = require('excel4node');
 const user=require("./models/register")
 const conn=require("./database");
 const details=require("./models/details")
@@ -10,6 +13,7 @@ const register = require('./models/register');
 const hostels = require('./models/hostels');
 const events=require('./models/events');
 const hostelStudents = require('./models/hostelStudents');
+const processing=require('./models/processing')
 const cookieParser=require('cookie-parser');
 const sessions=require('express-session');
 const port = 5000
@@ -40,7 +44,20 @@ app.post("/uniqueUser",(req,res)=>{
   console.log(cname)
   res.json("")
 })
-
+app.get('/hostelDashboard',(req,res)=>{
+  if(req.session.email){
+    console.log(req.session.email)
+    user.find({"email":req.session.email},(err,doc)=>{
+      if(err) console.log(err)
+      else{
+        res.render("hostel-admin/dashboard.ejs",{data:doc[0]});
+      }
+    })
+  }
+  else{
+    res.render('register.ejs',{msg:""})
+  }
+})
 app.get('/validate',(req,res)=>{
   if(!req.session.email){
      res.render("register.ejs",{"msg":""})
@@ -100,7 +117,6 @@ function sendEmail1(email,pass){
           subject: 'Welcome to CEG Events',
           html:"<p>Successfully Updated your password\nNew Password : "+pass+"</p><div class='col-lg-12'><img src='https://www.nic.bc.ca/posts/images/2867-newsletter-jan-4-main.jpg' style='width:100%' alt='No Image'></div>"
         };
-
         transporter.sendMail(mail_configs, function(error, info){
           if (error) {
             console.log(error);
@@ -108,7 +124,6 @@ function sendEmail1(email,pass){
           }
           return resolve({message:'Email sent successfully'})
         });      
-
   })
 }
 function userRegister(uname,uemail,upass,otpcode){
@@ -126,9 +141,47 @@ app.post('/send',async (req,res)=>{
   client.messages.create({body:otp,from:"7339377666",to:"+917810860782"})
 })
 
-
 app.get('/',(req,res)=>{
-    res.render("register.ejs",{msg:""})
+  console.log(req.session)
+  console.log(req.session.email)
+  if(req.session.email){
+    let value=0
+    register.findOne({email:req.session.email},(err,doc)=>{
+      if(err) console.log(err)
+      else{
+        console.log(doc)
+        if(doc['role']==3 && doc['details']=="Entered") value= 1
+        else if(doc['role']==3 && doc['details']!="Entered") value= 2
+        else if(doc['role']==1) value=3
+        else if(doc['role']==2) value=4
+        else if(doc['role']==4) value=5
+        if(value==1) res.render('index.ejs',{"user":req.session.email,"msg":""})
+        else if(value==2) res.render('index.ejs',{"user":req.session.email,"msg":"first"})
+        else if(value==3){
+          events.countDocuments({},(err,doc)=>{
+            user.countDocuments({$or:[{role:4},{role:2}]},(err,doc1)=>{
+              console.log(doc1)
+              console.log(doc)
+              var data={
+              user:req.session.email,
+              eventCount:doc,
+              admin:doc1,
+            }
+            res.render("admin/index-admin.ejs",{data:data});
+            })
+          })
+        }
+        else if(value==4){
+          var data={
+            username:req.session.email
+          }
+          res.render("hostel-admin/dashboard.ejs",{data:data});
+        }
+      }
+    })
+    
+  }
+   else res.render("register.ejs",{msg:""})
 })
 
 app.get('/forget-pass',(req,res)=>{
@@ -136,7 +189,6 @@ app.get('/forget-pass',(req,res)=>{
 })
 
 app.get('/resend_otp/:email',(req,res)=>{
-  console.log("HIII")
   console.log(req.params)
   let email=req.params.email[0];
   email+="******@gmail.com";
@@ -213,14 +265,15 @@ app.get('/dashboard',(req,res)=>{
 
 app.get('/login',(req,res)=>{
   // ses=req.session.email;
-  if(ses){
-    res.render('index.ejs',{"user":ses.email,"msg":""})
+  if(req.session.email){
+    res.render('index.ejs',{"user":req.session.email,"msg":""})
   }
   else{
     res.render("register.ejs",{"msg":""})
   }
 })
 app.post('/login',(req,res)=>{
+  
   console.log(req.body)
   user.find({$and: [ { email: req.body.email   }, { password:req.body.pass } ]},(err,doc)=>{
     console.log(doc.length)
@@ -230,7 +283,7 @@ app.post('/login',(req,res)=>{
     if(doc.length>0 && doc[0].email=="admin@gmail.com" && doc[0].password=="admin"){
         req.session.email=doc[0].email
         events.countDocuments({},(err,doc)=>{
-          user.countDocuments({role:4},(err,doc1)=>{
+          user.countDocuments({$or:[{role:4},{role:2}]},(err,doc1)=>{
             console.log(doc1)
             console.log(doc)
             var data={
@@ -243,7 +296,7 @@ app.post('/login',(req,res)=>{
         })
     }
     else if(doc.length>0 && doc[0].role==4){//hostel admin page
-      req.session.email=doc.email
+      req.session.email=doc[0]["email"]
       res.render("hostel-admin/dashboard.ejs",{data:doc[0]});
     }
     else if(doc.length>0 && doc[0].role==3){
@@ -251,7 +304,7 @@ app.post('/login',(req,res)=>{
       ses.email=req.body.email;
       req.session.email=req.body.email;
       req.session.save()
-      console.log(ses)
+      console.log(req.session)
       if(doc[0].details=="NotEntered"){
         res.render("index.ejs",{"user":req.session.email,"msg":"first"});
       }
@@ -259,6 +312,22 @@ app.post('/login',(req,res)=>{
         res.render("index.ejs",{"user":req.session.email,"msg":""});
       }
     }
+
+    else if(doc.length>0 && doc[0].role==2){
+      ses=req.session
+      ses.email=req.body.email;
+      req.session.email=req.body.email;
+      req.session.save()
+      console.log(ses)
+      events.find( { $or: [ { email1: req.body.email   }, { email2: req.body.email  } ] } ,(err,doc)=>{
+        if(err) console.log(err)
+        else{
+          console.log(doc)
+          res.render("event-admin/event_index.ejs",{"user":req.session.email,data:doc})
+        }
+      })
+    }
+
     else{
       res.render("register.ejs",{"msg":"Invalid Credentials"})
     }
@@ -658,7 +727,69 @@ app.get('/eventDetails',(req,res)=>{
     }
   })
 })
+app.post('/deleteHostelStudent',(req,res)=>{
+  hostelStudents.findOneAndUpdate({email:req.body.studentEmail},{$set:{flag:0}},(err,doc)=>{
+    if(err){
+      console.log(err)
+    }
+    else{
+      console.log(doc)
+      var hostelname=doc['hostelname']
+      var room=doc['roomno']
+      var floor
+      hostels.findOne({hname:hostelname},(err,doc)=>{
+        if(err) console.log(err)
+        else{
+          var count=doc['totalCount']
+          var gender=doc['type']
+          if(room in doc['roomsGF'][0]){
+            doc['roomsGF'][0][room]-=1
+            floor="0"
+            hostels.updateMany({hname:hostelname},{$set:{roomsGF:doc['roomsGF'][0]}},(err,doc)=>{
 
+            })
+          }
+          else if(room in doc['roomsFF'][0]){
+            doc['roomsFF'][0][room]-=1
+            floor="1"
+            hostels.updateMany({hname:hostelname},{$set:{roomsFF:doc['roomsFF'][0]}},(err,doc)=>{
+              
+            })
+          }
+          else if(room in doc['roomsSF'][0]){
+            doc['roomsSF'][0][room]-=1
+            floor="2"
+            hostels.updateMany({hname:hostelname},{$set:{roomsSF:doc['roomsSF'][0]}},(err,doc)=>{
+              
+            })
+          }
+          else if(room in doc['roomsTF'][0]){
+            doc['roomsTF'][0][room]-=1
+            floor="3"
+            hostels.updateMany({hname:hostelname},{$set:{roomsTF:doc['roomsTF'][0]}},(err,doc)=>{
+              
+            })
+          }
+          
+          hostelStudents.find({$and: [ { hostelname:hostelname  }, { roomno:room },{"flag":1} ]},(err,doc)=>{
+            if(err){
+              console.log(err)
+            }
+            else{
+              console.log(doc)
+              res.render('hostel-admin/tableHostelpage.ejs',{data:doc,count:count,hname:hostelname,room:room,floor:floor,gender:gender})
+            }
+          })
+         
+
+
+
+
+        }
+      })
+    }
+  })
+})
 app.get('/adminDetails',(req,res)=>{
   var adminData=new events()
   events.find({},(err,doc)=>{
@@ -719,37 +850,126 @@ app.get('/eventDelete/:ID',(req,res)=>{
 })
 app.get('/finalBooking/:id/:floor/:room',(req,res)=>{
   console.log(req.params.id+" "+req.params.floor+" "+req.params.room)
-  hostels.find({_id:req.params.id},(err,doc)=>{
-     if(err){
+  hostels.findOne({_id:req.params.id},(err,doc)=>{
+    if(err){
       console.log(err)
-     }
-     else{
-      count = doc[0]['totalCount']
-      hname = doc[0]['hname']
-      room = req.params.room
-      gender=doc[0]['type']
-      console.log(count+" "+hname+" "+room)
-      hostelStudents.find({$and: [ { hostelname:hname  }, { roomno:room } ]},(err,doc)=>{
+    }
+    else{
+      processing.find({$and:[{hostelname:doc['hname']},{roomno:req.params.room}]},(err,doc1)=>{
         if(err){
           console.log(err)
         }
+        else if(doc1.length>0){
+          hostels.findOne({_id:req.params.id},(err,doc)=>{
+            if(err){
+              console.log(err);
+            }
+            else{
+              var avail=0;
+                let keys=Object.keys(doc['roomsGF'][0])
+                for(let j=0;j<keys.length;j++){
+                    avail+=(doc['totalCount']-doc['roomsGF'][0][keys[j]])
+                }
+                keys=Object.keys(doc['roomsFF'][0])
+                for(let j=0;j<keys.length;j++){
+                    avail+=(doc['totalCount']-doc['roomsFF'][0][keys[j]])
+                }
+                keys=Object.keys(doc['roomsSF'][0])
+                for(let j=0;j<keys.length;j++){
+                    avail+=(doc['totalCount']-doc['roomsSF'][0][keys[j]])
+                }
+                keys=Object.keys(doc['roomsTF'][0])
+                for(let j=0;j<keys.length;j++){
+                    avail+=(doc['totalCount']-doc['roomsTF'][0][keys[j]])
+                }
+                processing.find({},(err,doc1)=>{
+                  if(err) console.log(err)
+                  else{
+                    var data1=[]
+                    for(let i=0;i<doc1.length;i++){
+                      data1.push({hostelname:doc1[i]['hostelname'],room:doc1[i]['roomno']})
+                    }
+                    
+                    res.render("hostel-admin/specific-rooms",{data:doc,avail:avail,data1:data1,msg:"The Room is Processing by other Admin"})
+                  }
+                })
+                
+            }
+          
+          })
+        }
         else{
-          console.log(doc)
-          res.render('hostel-admin/tableHostelpage.ejs',{data:doc,count:count,hname:hname,room:room,floor:req.params.floor,gender:gender})
+          processing.insertMany({hostelname:doc['hname'],roomno:req.params.room},(err,doc)=>{
+            if(err){
+              console.log(err)
+            }
+            else{
+              hostels.find({_id:req.params.id},(err,doc)=>{
+                if(err){
+                 console.log(err)
+                }
+                else{
+                 count = doc[0]['totalCount']
+                 hname = doc[0]['hname']
+                 room = req.params.room
+                 gender=doc[0]['type']
+                 console.log(count+" "+hname+" "+room)
+                 hostelStudents.find({$and: [ { hostelname:hname  }, { roomno:room },{"flag":1} ]},(err,doc)=>{
+                   if(err){
+                     console.log(err)
+                   }
+                   else{
+                     console.log(doc)
+                     res.render('hostel-admin/tableHostelpage.ejs',{data:doc,count:count,hname:hname,room:room,floor:req.params.floor,gender:gender})
+                   }
+                 })
+                }
+             })
+            }
+          })
+          
         }
       })
-     }
+    }
   })
+  
+  
 })
 app.get('/specific-hostel/:id',(req,res)=>{
-  hostels.find({_id:req.params.id},(err,doc)=>{
+  hostels.findOne({_id:req.params.id},(err,doc)=>{
     if(err){
       console.log(err);
     }
     else{
-      console.log(doc);
-      res.render("hostel-admin/specific-rooms",{data:doc})
+      var avail=0;
+        let keys=Object.keys(doc['roomsGF'][0])
+        for(let j=0;j<keys.length;j++){
+            avail+=(doc['totalCount']-doc['roomsGF'][0][keys[j]])
+        }
+        keys=Object.keys(doc['roomsFF'][0])
+        for(let j=0;j<keys.length;j++){
+            avail+=(doc['totalCount']-doc['roomsFF'][0][keys[j]])
+        }
+        keys=Object.keys(doc['roomsSF'][0])
+        for(let j=0;j<keys.length;j++){
+            avail+=(doc['totalCount']-doc['roomsSF'][0][keys[j]])
+        }
+        keys=Object.keys(doc['roomsTF'][0])
+        for(let j=0;j<keys.length;j++){
+            avail+=(doc['totalCount']-doc['roomsTF'][0][keys[j]])
+        }
+        processing.find({},(err,doc1)=>{
+          if(err) console.log(err)
+          else{
+            var data1=[]
+            for(let i=0;i<doc1.length;i++){
+              data1.push({hostelname:doc1[i]['hostelname'],room:doc1[i]['roomno']})
+            }
+            res.render("hostel-admin/specific-rooms",{data:doc,avail:avail,data1:data1,msg:""})
+          }
+        })
     }
+  
   })
 })
 app.get('/book-rooms',(req,res)=>{
@@ -758,7 +978,59 @@ app.get('/book-rooms',(req,res)=>{
       console.log(err)
     }
     else{
-      res.render('hostel-admin/book-rooms.ejs',{data:doc})
+      var male_availability=0,female_availability=0;
+      hostels.find({},(err,doc)=>{
+        if(err){
+          console.log(err)
+        }
+        else{
+          for(let i=0;i<doc.length;i++){
+              let keys=Object.keys(doc[i]['roomsGF'][0])
+              for(let j=0;j<keys.length;j++){
+                if(doc[i]['type']=="male"){
+                  male_availability+=(doc[i]['totalCount']-doc[i]['roomsGF'][0][keys[j]])
+                }
+                else{
+                  female_availability+=(doc[i]['totalCount']-doc[i]['roomsGF'][0][keys[j]])
+                }
+              }
+              keys=Object.keys(doc[i]['roomsFF'][0])
+              for(let j=0;j<keys.length;j++){
+                if(doc[i]['type']=="male"){
+                  male_availability+=(doc[i]['totalCount']-doc[i]['roomsFF'][0][keys[j]])
+                }
+                else{
+                  female_availability+=(doc[i]['totalCount']-doc[i]['roomsFF'][0][keys[j]])
+                }
+              }
+              keys=Object.keys(doc[i]['roomsSF'][0])
+              for(let j=0;j<keys.length;j++){
+                if(doc[i]['type']=="male"){
+                  male_availability+=(doc[i]['totalCount']-doc[i]['roomsSF'][0][keys[j]])
+                }
+                else{
+                  female_availability+=(doc[i]['totalCount']-doc[i]['roomsSF'][0][keys[j]])
+                }
+              }
+              keys=Object.keys(doc[i]['roomsTF'][0])
+              for(let j=0;j<keys.length;j++){
+                if(doc[i]['type']=="male"){
+                  male_availability+=(doc[i]['totalCount']-doc[i]['roomsTF'][0][keys[j]])
+                }
+                else{
+                  female_availability+=(doc[i]['totalCount']-doc[i]['roomsTF'][0][keys[j]])
+                }
+              }
+            
+          }
+          var avail={
+            mavail:male_availability,
+            favail:female_availability
+          }
+          res.render('hostel-admin/book-rooms.ejs',{data:doc,avail:avail})
+        }
+      })
+      
     }
   })
 })
@@ -912,9 +1184,9 @@ function sendEmailHostel(email,hostel,room){
         // console.log(otpcode)
         
         var mail_configs = {
-          from: 'CEG Events<cegevents2023@gmail.com>', 
+          from: 'Kurukshetra\'23<cegevents2023@gmail.com>', 
           to: email,
-          subject: 'Welcome to CEG Events',
+          subject: 'Welcome to Kurukshetra 2023',
           html:"<p>The Hostel Name is : "+hostel+"</p><p>The Room Number is : "+room+"</p><a href='https://goo.gl/maps/s73NjX6QbGXeG1rYA'><img src='https://drive.google.com/uc?export=view&id=15F-TtCSKlwWQ-K3cXfA5Z5IPWKIBwMXx' width='100%' height='300px' alt='NO IMAGE'></a>"
         };
 
@@ -929,14 +1201,32 @@ function sendEmailHostel(email,hostel,room){
   })
 }
 function HostelBooking(req){
+  var arr=[]
+if(req.body.check1) arr.push("18/04/2023")
+if(req.body.check2) arr.push("19/04/2023")
+if(req.body.check3) arr.push("20/04/2023")
+if(req.body.check4) arr.push("21/04/2023")
   hostelStudents.insertMany({
+    KID:req.body.kid,
     name:req.body.name,
     email:req.body.email,
     phone:req.body.phone,
     college:req.body.clg,
     gender:req.body.gender,
+    dept:req.body.dept,
+    year:req.body.year,
+    mode:req.body.mode,
+    tid:req.body.tid,
+    deposit:req.body.deposit,
+    food:req.body.food,
+    date:arr,
+    feedback:"NO",
     hostelname:req.body.hname,
-    roomno:req.body.hroom
+    roomno:req.body.hroom,
+    flag:1,
+    amount:req.body.amount,
+    advance:"NO"
+
   },(err,doc)=>{
     if(err){
      console.log(err)
@@ -957,86 +1247,293 @@ function HostelBooking(req){
   return
 }
 
+app.get('/vacateHostels/:email',(err,doc)=>{
+  console.log(req.params.email)
+  hostelStudents.updateOne({email:req.params.email},{$set:{flag:0}},(err,doc)=>{
+    if(err) console.log(err)
+    else{
+      console.log(doc);
+    }
+  })
+})
+
+app.get('/export',(req,res)=>{
+  console.log("hi")
+
+   hostelStudents.find({},(err,doc)=>{
+    if(err) console.log(err)
+    else{
+      
+      try{
+        let workbook = new excelJs.Workbook()
+        const sheet = workbook.addWorksheet()
+
+        sheet.columns = [
+         {header:"KID",key:"kid",width:25},
+         {header:"Name",key:"name",width:25},
+         {header:"E-mail",key:"email",width:25},
+         {header:"Phone",key:"phone",width:25},
+         {header:"College",key:"clg",width:25},
+         {header:"Gender",key:"gen",width:25},
+         {header:"Dept/Yr",key:"dept",width:25},
+         {header:"Hostel/Roomno",key:"hname",width:25},
+         {header:"Mode/TID",key:"mode",width:35},
+         {header:"Deposit Status",key:"deposit",width:25},
+         {header:"Date",key:"date",width:25},
+         {header:"No.of days",key:"days",width:25},
+         {header:"Food Requried",key:"food",width:25},
+         {header:"Feedback",key:"feed",width:25},
+         {header:"Amount Paid",key:"amt",width:25},
+        ]
+        
+       
+        sheet.getRow(1).font = {bold:true,size:15}
+        
+        for(i=0;i<doc.length;i++){
+          var m = "";
+          if(doc[i]["mode"] == "online"){
+            m = doc[i]["mode"]+"/"+doc[i]["tid"]
+          }
+          else{
+            m = doc[i]["mode"]
+          }
+          sheet.addRow({
+            kid:doc[i]["KID"],
+            name:doc[i]["name"],
+            email:doc[i]["email"],
+            phone:doc[i]["phone"],
+            clg:doc[i]["college"],
+            gen:doc[i]["gender"],
+            dept:doc[i]["dept"]+"/"+doc[i]["year"],
+            hname:doc[i]["hostelname"]+"/"+doc[i]["roomno"],
+            mode:m,
+            deposit:doc[i]["deposit"],
+            date:doc[i]["date"],
+            days:doc[i]["date"].length,
+            food:doc[i]["food"],
+            feed:doc[i]["feedback"],
+            amt:doc[i]["amount"],
+          })
+        }
+
+        console.log(sheet.rowCount)
+        for(i = 1;i <=sheet.rowCount; i++){
+          sheet.getRow(i).alignment = {horizontal:"center",vertical:"middle"};
+        }
+
+        res.setHeader(
+          "Content-Type",
+          "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        );
+        res.setHeader(
+          "Content-Disposition",
+          "attachment;filename=" + "hostelStudents.xlsx"
+        )
+
+        workbook.xlsx.write(res)
+
+     }catch(err){
+       console.log("ERROR"+err)
+     }
+    }
+  })
+})
 
 app.post('/hostelBookingManual',(req,res)=>{
   console.log("HostelManual")
-  HostelBooking(req)
-  console.log(req.body.rfloor)
+  console.log(req.body.check1+" "+req.body.check4)
+  processing.find({$and:[{hostelname:req.body.hname},{roomno:req.body.hroom}]},(err,doc)=>{
+    if(err) console.log(err)
+    else if(doc.length == 1){
+      hostelStudents.find({KID:req.body.kid},(err,doc1)=>{
+        if(err) console.log(err)
+        else if(doc1.length==0){
+          HostelBooking(req)
+        hostels.find({hname:req.body.hname},(err,doc)=>{
+          if(err){
+            console.log(err)
+          }
+          else{
+              gender=doc[0]['type']
+              console.log(req.body.hroom)
+              var GG = {}
+              if(req.body.rfloor == 0) GG = doc[0].roomsGF[0]
+              else if(req.body.rfloor == 1) GG = doc[0].roomsFF[0]
+              else if(req.body.rfloor == 2) GG = doc[0].roomsSF[0]
+              else if(req.body.rfloor == 3) GG = doc[0].roomsTF[0]
+              console.log(GG)
+              let keys=Object.keys(GG)
+              console.log(keys.length)
+              GG[req.body.hroom] += 1
+              console.log(GG)
+              if(req.body.rfloor == 0){
+                hostels.updateMany({"hname":req.body.hname},{$set:{roomsGF:GG}},(err,doc)=>{
+                  if(err){
+                    console.log(err)
+                  }
+                  else{
+                    console.log(doc)
+                  }
+                 })
+              }
+              else if(req.body.rfloor == 1){
+                hostels.updateMany({"hname":req.body.hname},{$set:{roomsFF:GG}},(err,doc)=>{
+                  if(err){
+                    console.log(err)
+                  }
+                  else{
+                    console.log(doc)
+                  }
+                 })
+              }
+              else if(req.body.rfloor == 2){
+                hostels.updateMany({"hname":req.body.hname},{$set:{roomsSF:GG}},(err,doc)=>{
+                  if(err){
+                    console.log(err)
+                  }
+                  else{
+                    console.log(doc)
+                  }
+                 })
+              }
+              else if(req.body.rfloor == 3){
+                hostels.updateMany({"hname":req.body.hname},{$set:{roomsTF:GG}},(err,doc)=>{
+                  if(err){
+                    console.log(err)
+                  }
+                  else{
+                    console.log(doc)
+                  }
+                 })
+              }
+              
+              hostelStudents.find({$and: [ { hostelname:req.body.hname  }, { roomno:req.body.hroom },{"flag":1} ]},(err,doc)=>{
+                if(err){
+                  console.log(err)
+                }
+                else{
+                  console.log(doc)
+                  res.render('hostel-admin/tableHostelpage.ejs',{data:doc,count:req.body.count,hname:req.body.hname,room:req.body.hroom,floor:req.body.rfloor,gender:gender})
+                }
+              })
+            
+           
+          }
+        })
+      
 
-    hostels.find({hname:req.body.hname},(err,doc)=>{
-      if(err){
-        console.log(err)
-      }
-      else{
-          gender=doc[0]['type']
-          console.log(req.body.hroom)
-          var GG = {}
-          if(req.body.rfloor == 0) GG = doc[0].roomsGF[0]
-          else if(req.body.rfloor == 1) GG = doc[0].roomsFF[0]
-          else if(req.body.rfloor == 2) GG = doc[0].roomsSF[0]
-          else if(req.body.rfloor == 3) GG = doc[0].roomsTF[0]
-          console.log(GG)
-          let keys=Object.keys(GG)
-          console.log(keys.length)
-          GG[req.body.hroom] += 1
-          console.log(GG)
-          if(req.body.rfloor == 0){
-            hostels.updateMany({"hname":req.body.hname},{$set:{roomsGF:GG}},(err,doc)=>{
-              if(err){
-                console.log(err)
-              }
-              else{
-                console.log(doc)
-              }
-             })
-          }
-          else if(req.body.rfloor == 1){
-            hostels.updateMany({"hname":req.body.hname},{$set:{roomsFF:GG}},(err,doc)=>{
-              if(err){
-                console.log(err)
-              }
-              else{
-                console.log(doc)
-              }
-             })
-          }
-          else if(req.body.rfloor == 2){
-            hostels.updateMany({"hname":req.body.hname},{$set:{roomsSF:GG}},(err,doc)=>{
-              if(err){
-                console.log(err)
-              }
-              else{
-                console.log(doc)
-              }
-             })
-          }
-          else if(req.body.rfloor == 3){
-            hostels.updateMany({"hname":req.body.hname},{$set:{roomsTF:GG}},(err,doc)=>{
-              if(err){
-                console.log(err)
-              }
-              else{
-                console.log(doc)
-              }
-             })
-          }
+
+
           
-          hostelStudents.find({$and: [ { hostelname:req.body.hname  }, { roomno:req.body.hroom } ]},(err,doc)=>{
+        }
+      else{
+        hostelStudents.find({$and: [ { hostelname:req.body.hname  }, { roomno:req.body.hroom },{"flag":1} ]},(err,doc)=>{
+          if(err){
+            console.log(err)
+          }
+          else{
+            console.log(doc)
+            res.render('hostel-admin/tableHostelpage.ejs',{data:doc,count:req.body.count,hname:req.body.hname,room:req.body.hroom,floor:req.body.rfloor,gender:gender})
+          }
+        })
+      }
+      })
+        
+        
+    }
+    else{
+      processing.deleteOne({$and:[{hostelname:req.body.hname},{roomno:req.body.hroom}]},(err,doc)=>{
+        if(err) console.log(err)
+        else{
+          hostels.findOne({hname:req.body.hname},(err,doc)=>{
             if(err){
-              console.log(err)
+              console.log(err);
             }
             else{
-              console.log(doc)
-              res.render('hostel-admin/tableHostelpage.ejs',{data:doc,count:req.body.count,hname:req.body.hname,room:req.body.hroom,floor:req.body.rfloor,gender:gender})
+                var avail=0;
+                let keys=Object.keys(doc['roomsGF'][0])
+                for(let j=0;j<keys.length;j++){
+                    avail+=(doc['totalCount']-doc['roomsGF'][0][keys[j]])
+                }
+                keys=Object.keys(doc['roomsFF'][0])
+                for(let j=0;j<keys.length;j++){
+                    avail+=(doc['totalCount']-doc['roomsFF'][0][keys[j]])
+                }
+                keys=Object.keys(doc['roomsSF'][0])
+                for(let j=0;j<keys.length;j++){
+                    avail+=(doc['totalCount']-doc['roomsSF'][0][keys[j]])
+                }
+                keys=Object.keys(doc['roomsTF'][0])
+                for(let j=0;j<keys.length;j++){
+                    avail+=(doc['totalCount']-doc['roomsTF'][0][keys[j]])
+                }
+                processing.find({},(err,doc1)=>{
+                  if(err) console.log(err)
+                  else{
+                    var data1=[]
+                    for(let i=0;i<doc1.length;i++){
+                      data1.push({hostelname:doc1[i]['hostelname'],room:doc1[i]['roomno']})
+                    }
+                    res.render("hostel-admin/specific-rooms",{data:doc,avail:avail,data1:data1,msg:"The Room is Processing by other Admin"})
+                    return 
+                  }
+                })
             }
           })
-        
-       
-      }
-    })
+         
+        }
+      })
+    }    
+  })
+})
+app.get('/deleteProcessing/:hname/:room',(req,res)=>{
+  console.log("YES")
+  processing.deleteOne({$and:[{hostelname:req.params.hname},{roomno:req.params.room}]},(err,doc)=>{
+    if(err){
+      console.log(err)
+    }
+    else{
+      console.log(doc)
+      hostels.findOne({hname:req.params.hname},(err,doc)=>{
+        if(err){
+          console.log(err);
+        }
+        else{
+          var avail=0;
+            let keys=Object.keys(doc['roomsGF'][0])
+            for(let j=0;j<keys.length;j++){
+                avail+=(doc['totalCount']-doc['roomsGF'][0][keys[j]])
+            }
+            keys=Object.keys(doc['roomsFF'][0])
+            for(let j=0;j<keys.length;j++){
+                avail+=(doc['totalCount']-doc['roomsFF'][0][keys[j]])
+            }
+            keys=Object.keys(doc['roomsSF'][0])
+            for(let j=0;j<keys.length;j++){
+                avail+=(doc['totalCount']-doc['roomsSF'][0][keys[j]])
+            }
+            keys=Object.keys(doc['roomsTF'][0])
+            for(let j=0;j<keys.length;j++){
+                avail+=(doc['totalCount']-doc['roomsTF'][0][keys[j]])
+            }
+            processing.find({},(err,doc1)=>{
+              if(err) console.log(err)
+              else{
+                var data1=[]
+                for(let i=0;i<doc1.length;i++){
+                  data1.push({hostelname:doc1[i]['hostelname'],room:doc1[i]['roomno']})
+                }
+                res.render("hostel-admin/specific-rooms",{data:doc,avail:avail,data1:data1,msg:""})
+              }
+            })
+        }
+      
+      })
+    }
+  })
 })
 app.get('/bookedRoomDetails',(req,res)=>{
-  hostelStudents.find({},(err,doc)=>{
+  hostelStudents.find({"flag":1},(err,doc)=>{
     if(err){
       console.log(err)
     }
@@ -1053,7 +1550,7 @@ app.post('/hostelBooking',(req,res)=>{
 app.get('/adminUser',(req,res)=>{
   console.log("hi")
   if(ses){
-    res.render('index.ejs',{"user":ses.email,"msg":""})
+    res.render('index.ejs',{"user":req.session.email,"msg":""})
   }
   else{
     // res.render("register.ejs",{"msg":""})
@@ -1099,10 +1596,139 @@ app.get('/hostel-students',(req,res)=>{
   })
 })
 
+app.get('/events-display/:ID',(req,res)=>{
+   console.log(req.params.ID)
+   res.render("events_display.ejs",{"user":req.params.ID})
+})
+
+app.post('/addEventDetails',(req,res)=>{
+  console.log("hi");
+  if(req.body.desc!=""){
+    var arr=new Array(),val="";
+    console.log(req.body.desc);
+    desc = req.body.desc;
+    console.log(req.body.eventid);
+    for(i=0;i<desc.length;i++){
+     if(desc[i] == "."){
+        arr.push(val);
+        val=""
+     }
+     else{
+        val+=desc[i];
+     }
+    }
+    console.log(arr)
+    events.updateOne({eventID:req.body.eventid},{$set:{fulldesc:arr}},(err,doc)=>{
+     if(err)  console.log(err)
+     else{
+        console.log(req.session.email)
+        events.find( { $or: [ { email1: req.session.email   }, { email2: req.session.email  } ] } ,(err,doc1)=>{
+         if(err) console.log(err)
+         else{
+           console.log(doc1)
+           res.render("event-admin/event_index.ejs",{"user":req.session.email,data:doc1})
+         }
+       })
+       console.log(doc)
+     }
+    })
+  }
+  else if(req.body.rule!=""){
+    console.log("Hi2")
+    var arr=new Array(),val="";
+    console.log(req.body.rule);
+    desc = req.body.rule;
+    console.log(req.body.eventid);
+    for(i=0;i<desc.length;i++){
+     if(desc[i] == "."){
+        arr.push(val);
+        val=""
+     }
+     else{
+        val+=desc[i];
+     }
+    }
+    console.log(arr)
+    events.updateOne({eventID:req.body.eventid},{$set:{rules:arr}},(err,doc)=>{
+     if(err)  console.log(err)
+     else{
+        console.log(req.session.email)
+        events.find( { $or: [ { email1: req.session.email   }, { email2: req.session.email  } ] } ,(err,doc1)=>{
+         if(err) console.log(err)
+         else{
+           console.log(doc1)
+           res.render("event-admin/event_index.ejs",{"user":req.session.email,data:doc1})
+         }
+       })
+       console.log(doc)
+     }
+    })
+  }
+  else if(req.body.roundname!="" && req.body.rounddesc!=""){
+       console.log("Hi3")
+       var arr=new Array(),val="";
+       console.log(req.body.rounddesc);
+       desc = req.body.rounddesc;
+       console.log(req.body.eventid);
+       for(i=0;i<desc.length;i++){
+        if(desc[i] == "."){
+           arr.push(val);
+           val=""
+        }
+        else{
+           val+=desc[i];
+        }
+       }
+       console.log(arr)
+       events.updateMany({eventID:req.body.eventid},{$set:{rounddesc:arr,roundname:req.body.roundname}},(err,doc)=>{
+        if(err)  console.log(err)
+        else{
+           console.log(req.session.email)
+           events.find( { $or: [ { email1: req.session.email   }, { email2: req.session.email  } ] } ,(err,doc1)=>{
+            if(err) console.log(err)
+            else{
+              console.log(doc1)
+              res.render("event-admin/event_index.ejs",{"user":req.session.email,data:doc1})
+            }
+          })
+          console.log(doc)
+        }
+       })
+
+  }
+})
+app.post('/getData',(req,res)=>{
+  // console.log("GETDATA"+req.body.id)
+  hostels.findOne({'hname':req.body.id},(err,doc)=>{
+    if(err){
+      console.log(err)
+    }
+    else{
+      processing.find({},(err,doc1)=>{
+        if(err) console.log(err)
+        else{
+          // console.log(doc1)
+          var data={
+            data:doc,
+            data1:doc1
+          }
+          res.status(200).send(data);
+        }
+      })
+    }
+  })
+  
+})
+app.get('/feedback/:email',(req,res)=>{
+  console.log(req.params.email)
+  hostelStudents.updateMany({email:req.params.email},{$set:{feedback:"YES"}},(err,doc)=>{
+    if(err) console.log(err)
+    else res.status(200).send(doc);
+  })
+})
 app.get('/logout',(req,res)=>{
   req.session.destroy();
   ses=""
-  
   console.log(req.session)
   res.render("register.ejs",{"msg":""})
 })

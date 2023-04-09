@@ -1,1 +1,10 @@
-node_modules
+user-profile.ejs
+register_otp.ejs
+index.ejs
+forget_otp.ejs
+events_display.ejs
+change_password.ejs
+event-admin
+admin
+hostel-admin/hostel-booking.ejs
+hoste-admin/view-students.ejs

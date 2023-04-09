@@ -47,7 +47,7 @@
   <header id="header" class="header fixed-top d-flex align-items-center">
 
     <div class="d-flex align-items-center justify-content-between">
-      <a href="index.html" class="logo d-flex align-items-center">
+      <a href="#" class="logo d-flex align-items-center">
         <img src="img/logo.png" alt="">
         <span class="d-none d-lg-block">CEG Events</span>
       </a>
@@ -85,14 +85,14 @@
           <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
             <li class="dropdown-header">
               <h6>CEG-Event</h6>
-              <span>Admin</span>
+              <span>Hostel-Admin</span>
             </li>
             <li>
               <hr class="dropdown-divider">
             </li>
 
             <li>
-              <a class="dropdown-item d-flex align-items-center" href="#">
+              <a class="dropdown-item d-flex align-items-center" href="/logout">
                 <i class="bi bi-box-arrow-right"></i>
                 <span>Sign Out</span>
               </a>
@@ -110,61 +110,58 @@
   <aside id="sidebar" class="sidebar">
 
     <ul class="sidebar-nav" id="sidebar-nav">
-
       <li class="nav-item">
-        <a class="nav-link " href="/adminMain">
+        <a class="nav-link " href="/hostelDashboard">
           <i class="bi bi-grid"></i>
-          <span>Dashboard</span>
+          <span>Home</span>
         </a>
       </li><!-- End Dashboard Nav -->
 
       <li class="nav-item">
-        <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
-          <i class="bi bi-menu-button-wide"></i><span>Components</span></i>
+        <a class="nav-link collapsed"   href="/add-hostelrooms">
+          <i class="bi bi-menu-button-wide"></i><span>Add Hostel Rooms</span></i>
         </a>
       </li><!-- End Components Nav -->
 
       <li class="nav-item">
-        <a class="nav-link collapsed" data-bs-target="#forms-nav" data-bs-toggle="collapse" href="#">
-          <i class="bi bi-journal-text"></i><span>Forms</span></i>
+        <a class="nav-link collapsed"  href="/book-rooms">
+          <i class="bi bi-journal-text"></i><span>Book Rooms</span></i>
         </a>
 
+
       <li class="nav-item">
-        <a class="nav-link collapsed" href="/hostel-students">
-          <i class="bi bi-layout-text-window-reverse"></i><span>View Students</span></i>
+        <a class="nav-link collapsed"   href="/bookedRoomDetails">
+          <i class="bi bi-bar-chart"></i><span>View Booked Rooms</span></i>
         </a>
     
+        <!-- <li class="nav-item">
+          <a class="nav-link collapsed" href="/hostel-students">
+            <i class="bi bi-layout-text-window-reverse"></i><span>View Students</span></i>
+          </a> -->
 
-      <li class="nav-item">
-        <a class="nav-link collapsed" data-bs-target="#charts-nav" data-bs-toggle="collapse" href="#">
-          <i class="bi bi-bar-chart"></i><span>Charts</span></i>
-        </a>
-       
+          <li class="nav-item">
+            <a class="nav-link collapsed" href="/export">
+              <i class="bi bi-download"></i><span>Generate Excel</span></i>
+            </a>
 
-      <li class="nav-item">
-        <a class="nav-link collapsed" data-bs-target="#icons-nav" data-bs-toggle="collapse" href="#">
-          <i class="bi bi-gem"></i><span>Icons</span></i>
-        </a>
-
-      <li class="nav-heading">Pages</li>
+      <!-- <li class="nav-heading">Pages</li>
       <li class="nav-item">
         <a class="nav-link collapsed" href="pages-error-404.html">
           <i class="bi bi-dash-circle"></i>
           <span>Error 404</span>
         </a>
-      </li><!-- End Error 404 Page Nav -->
+      </li>End Error 404 Page Nav -->
 
       <!-- End Blank Page Nav -->
 
     </ul>
   </aside><!-- End Sidebar-->
   <main id="main" class="main">
-
     <div class="pagetitle">
-      <h1>Hostel-Admin</h1>
+      <h1>Hostel-Booking</h1>
       <nav>
         <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+          <li class="breadcrumb-item"><a href="/hostelDashboard">Home</a></li>
           <li class="breadcrumb-item active">Dashboard</li>
         </ol>
       </nav>
@@ -204,12 +201,8 @@
             <div class="col-xxl-3 col-md-6">
               <a href="/book-rooms">
               <div class="card info-card revenue-card">
-
-                
-
                 <div class="card-body">
                   <h5 class="card-title">Book Rooms</h5>
-
                   <div class="d-flex align-items-center">
                     <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
                       <i class="bi bi-clipboard-data-fill"></i>
@@ -229,9 +222,6 @@
             <div class="col-xxl-3 col-md-6">
               <a href="/bookedRoomDetails">
               <div class="card info-card customers-card">
-
-                
-
                 <div class="card-body">
                   <h5 class="card-title">View Booked Rooms</h5>
 
@@ -248,10 +238,7 @@
                 </div>
               </div>
               </a>
-            </div><!-- End Customers Card -->
-
-      
-            
+            </div><!-- End Customers Card -->      
           </div><!-- End Website Traffic -->
         </div>
       </div>
@@ -269,7 +256,7 @@
       <!-- You can delete the links only if you purchased the pro version. -->
       <!-- Licensing information: https://bootstrapmade.com/license/ -->
       <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/ -->
-      Designed by <a href="https://bootstrapmade.com/">CEG-Management</a>
+      Designed by <a href="#">CEG-Management</a>
     </div>
   </footer><!-- End Footer -->
 

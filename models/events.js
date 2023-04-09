@@ -37,5 +37,17 @@ const userSchema=new mongoose.Schema({
         type:String,
         required:true
     },
+    fulldesc:{
+        type:Array
+    },
+    rules:{
+        type:Array
+    },
+    roundname:{
+        type:String
+    },
+    rounddesc:{
+        type:Array
+    }
 });
 module.exports=User=mongoose.model("events",userSchema)

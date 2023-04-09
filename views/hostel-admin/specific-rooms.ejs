@@ -5,10 +5,16 @@
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-  <title>Forms / Layouts - NiceAdmin Bootstrap Template</title>
+  <title><%= data['hname'] %></title>
   <meta content="" name="description">
   <meta content="" name="keywords">
-
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link href="vendor/mdi-font/css/material-design-iconic-font.min.css" rel="stylesheet" media="all">
+  <link href="vendor/font-awesome-4.7/css/font-awesome.min.css" rel="stylesheet" media="all">
+  <link href="css/style.css" rel="stylesheet">
   <!-- Favicons -->
   <link href="/img/favicon.png" rel="icon">
   <link href="/img/apple-touch-icon.png" rel="apple-touch-icon">
@@ -28,13 +34,6 @@
 
   <!-- Template Main CSS File -->
   <link href="/css/style.css" rel="stylesheet">
-
-  <!-- =======================================================
-  * Template Name: NiceAdmin - v2.5.0
-  * Template URL: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/
-  * Author: BootstrapMade.com
-  * License: https://bootstrapmade.com/license/
-  ======================================================== -->
 </head>
 
 <body>
@@ -43,8 +42,8 @@
   <header id="header" class="header fixed-top d-flex align-items-center">
 
     <div class="d-flex align-items-center justify-content-between">
-      <a href="index.html" class="logo d-flex align-items-center">
-        <img src="img/logo.png" alt="">
+      <a href="#" class="logo d-flex align-items-center">
+        <img src="/img/logo.png" alt="">
         <span class="d-none d-lg-block">CEG Events</span>
       </a>
       <i class="bi bi-list toggle-sidebar-btn"></i>
@@ -87,7 +86,7 @@
         <li class="nav-item dropdown pe-3">
           <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
             <img src="/img/default.png" alt="Profile" class="rounded-circle">
-            <span class="d-none d-md-block dropdown-toggle ps-2">admin@gmail.com</span>
+            <span class="d-none d-md-block dropdown-toggle ps-2">ADMIN</span>
           </a><!-- End Profile Iamge Icon -->
 
           <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
@@ -105,10 +104,8 @@
                 <span>Sign Out</span>
               </a>
             </li>
-
           </ul><!-- End Profile Dropdown -->
         </li><!-- End Profile Nav -->
-
       </ul>
     </nav><!-- End Icons Navigation -->
 
@@ -119,42 +116,42 @@
 
     <ul class="sidebar-nav" id="sidebar-nav">
 
-      <li class="nav-item">
-        <a class="nav-link " href="/adminMain">
-          <i class="bi bi-grid"></i>
-          <span>Dashboard</span>
-        </a>
-      </li><!-- End Dashboard Nav -->
-
-      <li class="nav-item">
-        <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
-          <i class="bi bi-menu-button-wide"></i><span>Components</span></i>
-        </a>
-      </li><!-- End Components Nav -->
-
-      <li class="nav-item">
-        <a class="nav-link collapsed" data-bs-target="#forms-nav" data-bs-toggle="collapse" href="#">
-          <i class="bi bi-journal-text"></i><span>Forms</span></i>
-        </a>
-
-      <li class="nav-item">
-        <a class="nav-link collapsed" data-bs-target="#tables-nav" data-bs-toggle="collapse" href="#">
-          <i class="bi bi-layout-text-window-reverse"></i><span>Tables</span></i>
-        </a>
-    
-
-      <li class="nav-item">
-        <a class="nav-link collapsed" data-bs-target="#charts-nav" data-bs-toggle="collapse" href="#">
-          <i class="bi bi-bar-chart"></i><span>Charts</span></i>
-        </a>
-       
-
-      <li class="nav-item">
-        <a class="nav-link collapsed" data-bs-target="#icons-nav" data-bs-toggle="collapse" href="#">
-          <i class="bi bi-gem"></i><span>Icons</span></i>
-        </a>
-
-      <li class="nav-heading">Pages</li>
+      <ul class="sidebar-nav" id="sidebar-nav">
+        <li class="nav-item">
+          <a class="nav-link " href="/hostelDashboard">
+            <i class="bi bi-grid"></i>
+            <span>Home</span>
+          </a>
+        </li><!-- End Dashboard Nav -->
+  
+        <li class="nav-item">
+          <a class="nav-link collapsed"   href="/add-hostelrooms">
+            <i class="bi bi-menu-button-wide"></i><span>Add Hostel Rooms</span></i>
+          </a>
+        </li><!-- End Components Nav -->
+  
+        <li class="nav-item">
+          <a class="nav-link collapsed"  href="/book-rooms">
+            <i class="bi bi-journal-text"></i><span>Book Rooms</span></i>
+          </a>
+  
+  
+        <li class="nav-item">
+          <a class="nav-link collapsed"   href="/bookedRoomDetails">
+            <i class="bi bi-bar-chart"></i><span>View Booked Rooms</span></i>
+          </a>
+      
+          <!-- <li class="nav-item">
+            <a class="nav-link collapsed" href="/hostel-students">
+              <i class="bi bi-layout-text-window-reverse"></i><span>View Students</span></i>
+            </a> -->
+  
+            <li class="nav-item">
+              <a class="nav-link collapsed" href="/export">
+                <i class="bi bi-download"></i><span>Generate Excel</span></i>
+              </a>
+  
+      <!-- <li class="nav-heading">Pages</li> -->
 
       <!-- End Profile Page Nav -->
 <!-- End F.A.Q Page Nav -->
@@ -165,12 +162,12 @@
 
      <!-- End Login Page Nav -->
 
-      <li class="nav-item">
+      <!-- <li class="nav-item">
         <a class="nav-link collapsed" href="pages-error-404.html">
           <i class="bi bi-dash-circle"></i>
           <span>Error 404</span>
         </a>
-      </li><!-- End Error 404 Page Nav -->
+      </li>End Error 404 Page Nav -->
 
       <!-- End Blank Page Nav -->
 
@@ -179,13 +176,18 @@
   </aside><!-- End Sidebar-->
 
   <main id="main" class="main">
-
+    <div id = "title">
+      <span ></span>
+  </div>
     <div class="pagetitle">
-      <h1>Hostel</h1>
+      <div class="row"> 
+        <div class="col"> <h1>Hostel</h1> </div>
+        <div class="col"><h3 id="avail"><span class="badge bg-primary bx-pull-right">Availability : <%= avail %></span></h3></div>
+      </div>
       <nav>
         <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="">Home</a></li>
-          <li class="breadcrumb-item active"><%= data[0]['hname'] %></li>
+          <li class="breadcrumb-item"><a href="/book-rooms">Home</a></li>
+          <li class="breadcrumb-item active"><%= data['hname'] %></li>
         </ol>
       </nav>
     </div><!-- End Page Title -->
@@ -195,20 +197,24 @@
         <!-- Left side columns -->
         <div class="col-lg-12">
           <div class="row">
-            <% let keys=Object.keys(data[0].roomsGF[0]) %>
+            <% var flag=0 %>
+            <% let keys=Object.keys(data.roomsGF[0]) %>
            <% if(keys.length!=0) { %>
             <h3>Ground Floor</h3>
             <% } %>    
             
     <% for(let i=0;i<keys.length;i++){ %>        
             <div class="col-xxl-2 col-md-6">
-              <div class="card info-card sales-card">
-                <a href="/finalBooking/<%= data[0]['_id'] %>/0/<%= keys[i] %>">
+              <% flag=0 %>
+             
+                <div class="card info-card sales-card" id="<%= keys[i] %>" >
+            
+                <a href="/finalBooking/<%= data['_id'] %>/0/<%= keys[i] %>">
                 <div class="card-body">
                   <h5 class="card-title">Room No : <%= keys[i] %> </h5>
                   <div class="d-flex align-items-center">
-                    <div class="ps-0">
-                      <span style="color:red">Availability :</span> <%= data[0].roomsGF[0][keys[i]] %> | <%= data[0].totalCount %>
+                    <div class="ps-0" id="<%= data['hname'] %><%= keys[i] %>">
+                      <span style="color:red">Availability :</span> <%= data.roomsGF[0][keys[i]] %> | <%= data.totalCount %>
                     </div>
                   </div>
                 </div>
@@ -227,22 +233,21 @@
 
         <div class="col-lg-12">
           <div class="row">    
-            <% keys=Object.keys(data[0].roomsFF[0]) %>
+            <% keys=Object.keys(data.roomsFF[0]) %>
             <% if(keys.length!=0) { %>
               <h3>First Floor</h3>
               <% } %>
     <% for(let i=0;i<keys.length;i++){ %>        
             <div class="col-xxl-2 col-md-6">
-              
-              <div class="card info-card sales-card">
-                <a href="/finalBooking/<%= data[0]['_id'] %>/1/<%= keys[i] %>">
+                <div class="card info-card sales-card" id="<%= keys[i] %>">
+                <a href="/finalBooking/<%= data['_id'] %>/1/<%= keys[i] %>">
                 <div class="card-body">
                   <h5 class="card-title">Room No : <%= keys[i] %> </h5>
 
                   <div class="d-flex align-items-center">
                     
-                    <div class="ps-0">
-                      <span style="color:red">Availability :</span> <%= data[0].roomsFF[0][keys[i]] %> | <%= data[0].totalCount %>
+                    <div class="ps-0" id="<%= data['hname'] %><%= keys[i] %>">
+                      <span style="color:red">Availability :</span> <%= data.roomsFF[0][keys[i]] %> | <%= data.totalCount %>
                       
                     </div>
                   </div>
@@ -262,22 +267,21 @@
         </div>
         <div class="col-lg-12">
           <div class="row">
-            <% keys=Object.keys(data[0].roomsSF[0]) %>
+            <% keys=Object.keys(data.roomsSF[0]) %>
             <% if(keys.length!=0) { %>
               <h3>Second Floor</h3>
               <% } %>
     <% for(let i=0;i<keys.length;i++){ %>        
             <div class="col-xxl-2 col-md-6">
-              
-              <div class="card info-card sales-card">
-                <a href="/finalBooking/<%= data[0]['_id'] %>/2/<%= keys[i] %>">
+                <div class="card info-card sales-card" id="<%= keys[i] %>">
+                <a href="/finalBooking/<%= data['_id'] %>/2/<%= keys[i] %>">
                 <div class="card-body">
                   <h5 class="card-title">Room No : <%= keys[i] %> </h5>
 
                   <div class="d-flex align-items-center">
                     
-                    <div class="ps-0">
-                      <span style="color:red">Availability :</span> <%= data[0].roomsSF[0][keys[i]] %> | <%= data[0].totalCount %>
+                    <div class="ps-0" id="<%= data['hname'] %><%= keys[i] %>">
+                      <span style="color:red">Availability :</span> <%= data.roomsSF[0][keys[i]] %> | <%= data.totalCount %>
                       
                     </div>
                   </div>
@@ -298,22 +302,21 @@
 
         <div class="col-lg-12">
           <div class="row"> 
-            <% keys=Object.keys(data[0].roomsTF[0]) %>
+            <% keys=Object.keys(data.roomsTF[0]) %>
             <% if(keys.length!=0) { %>
               <h3>Third Floor</h3>
               <% } %>
     <% for(let i=0;i<keys.length;i++){ %>        
             <div class="col-xxl-2 col-md-6">
-              
-              <div class="card info-card sales-card">
-                <a href="/finalBooking/<%= data[0]['_id'] %>/3/<%= keys[i] %>">
+                <div class="card info-card sales-card" id="<%= keys[i] %>">
+                <a href="/finalBooking/<%= data['_id'] %>/3/<%= keys[i] %>">
                 <div class="card-body">
                   <h5 class="card-title">Room No : <%= keys[i] %> </h5>
 
                   <div class="d-flex align-items-center">
                     
-                    <div class="ps-0">
-                      <span style="color:red">Availability :</span> <%= data[0].roomsTF[0][keys[i]] %> | <%= data[0].totalCount %>
+                    <div class="ps-0" id="<%= data['hname'] %><%= keys[i] %>">
+                      <span style="color:red">Availability :</span> <%= data.roomsTF[0][keys[i]] %> | <%= data.totalCount %>
                       
                     </div>
                   </div>
@@ -342,7 +345,97 @@
     </section>
 
   </main><!-- End #main -->
-
+  <button type="button" class="btn btn-success" hidden data-toggle="modal" id="val" data-target="#staticBackdrop"> 
+  </button>
+  <div   class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+             <button class="pull-right">  <i class="fa fa-close close" data-dismiss="modal"></i></button>
+                    <h5 class="text-uppercase" style="text-align: center;"><%= msg %>  </h5>
+            </div>
+        </div>
+    </div>
+  </div> 
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+  <script>
+    $(document).ready(function(){
+      setInterval(function(){
+        $.ajax({
+            url: "/getData",
+            type: "POST",
+            data: {
+                'id':"<%= data['hname'] %>"
+            },
+            success: function(data){
+              keys=Object.keys(data.data.roomsGF[0])
+              let avail=0;
+              for(let i=0;i<keys.length;i++){     
+                if(data.data1.some(processing=>processing.hostelname===data.data['hname'] && processing.roomno===keys[i])){ 
+                  
+                  $('#'+keys[i]).css("background-color","yellow");
+                }
+                else{
+                 
+                  $('#'+keys[i]).css("background-color","white");
+                }
+                avail+=(data.data['totalCount']-data.data['roomsGF'][0][keys[i]])
+                $('#'+data.data['hname']+keys[i]).html("<span style='color:red'>Availability : </span>"+ data.data.roomsGF[0][keys[i]]+"  |  "+data.data.totalCount )
+              }
+              keys=Object.keys(data.data.roomsFF[0])
+              for(let i=0;i<keys.length;i++){     
+                if(data.data1.some(processing=>processing.hostelname===data.data['hname'] && processing.roomno===keys[i])){ 
+                  
+                  $('#'+keys[i]).css("background-color","yellow");
+                }
+                else{
+                 
+                  $('#'+keys[i]).css("background-color","white");
+                }
+                avail+=(data.data['totalCount']-data.data['roomsFF'][0][keys[i]])
+                $('#'+data.data['hname']+keys[i]).html("<span style='color:red'>Availability : </span>"+ data.data.roomsFF[0][keys[i]]+"  |  "+data.data.totalCount )
+              }
+              keys=Object.keys(data.data.roomsSF[0])
+              for(let i=0;i<keys.length;i++){     
+                if(data.data1.some(processing=>processing.hostelname===data.data['hname'] && processing.roomno===keys[i])){ 
+                  
+                  $('#'+keys[i]).css("background-color","yellow");
+                }
+                else{
+               
+                  $('#'+keys[i]).css("background-color","white");
+                }
+                avail+=(data.data['totalCount']-data.data['roomsSF'][0][keys[i]])
+                $('#'+data.data['hname']+keys[i]).html("<span style='color:red'>Availability : </span>"+ data.data.roomsSF[0][keys[i]]+"  |  "+data.data.totalCount )
+              }
+              keys=Object.keys(data.data.roomsTF[0])
+              for(let i=0;i<keys.length;i++){     
+                if(data.data1.some(processing=>processing.hostelname===data.data['hname'] && processing.roomno===keys[i])){ 
+            
+                  $('#'+keys[i]).css("background-color","yellow");
+                }
+                else{
+                 
+                  $('#'+keys[i]).css("background-color","white");
+                }
+                avail+=(data.data['totalCount']-data.data['roomsTF'][0][keys[i]])
+                $('#'+data.data['hname']+keys[i]).html("<span style='color:red'>Availability : </span>"+ data.data.roomsTF[0][keys[i]]+"  |  "+data.data.totalCount )
+              }
+              $('#avail').html("<span class='badge bg-primary bx-pull-right'>Availability : "+ avail+"</span>")
+            }
+        });
+      },1000)
+    })
+  </script>
+  
+  <script>
+  </script>
+  
+  <script>
+    if("<%= msg %>")
+        document.getElementById("val").click();
+        
+  </script>
   <!-- ======= Footer ======= -->
   <footer id="footer" class="footer">
     <div class="copyright">
@@ -353,7 +446,7 @@
       <!-- You can delete the links only if you purchased the pro version. -->
       <!-- Licensing information: https://bootstrapmade.com/license/ -->
       <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/ -->
-      Designed by <a href="/https://bootstrapmade.com/">CEG-Management</a>
+      Designed by <a href="#">CEG-Management</a>
     </div>
   </footer><!-- End Footer -->
 

@@ -1,9 +1,10 @@
 const { Int32 } = require('mongodb');
 var mongoose=require('mongoose');
 const userSchema=new mongoose.Schema({
-    studentID:{
+
+    KID:{
         type:String,
-        // required:true,
+        required:true,
     },
     name:{
         type:String,
@@ -25,11 +26,55 @@ const userSchema=new mongoose.Schema({
         type:String,
         required:true
     },
+    dept:{
+        type:String,
+        required:true,
+    },
+    year:{
+        type:String,
+        required:true,
+    },
+    mode:{
+        type:String,
+        required:true,
+    },
+    tid:{
+        type:String,
+        
+    },
+    deposit:{
+        type:String,
+        required:true,
+    },
+    food:{
+        type:String,
+        required:true,
+    },
+    date:{
+        type:Object,
+        required:true,
+    },
+    feedback:{
+        type:String,
+        required:true,
+    },
     hostelname:{
         type:String,
         required:true
     },
     roomno:{
+        type:String,
+        required:true
+    },
+    flag:{
+        type:Number,
+        required:true
+    },
+    amount:{
+        type:Number,
+        requried:true
+    },
+    advance:{
         type:String,
         required:true
     }
