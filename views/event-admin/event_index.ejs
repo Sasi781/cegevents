@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>Forms / Layouts - NiceAdmin Bootstrap Template</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <!-- Favicons -->
+  <link href="img/favicon.png" rel="icon">
+  <link href="img/apple-touch-icon.png" rel="apple-touch-icon">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.gstatic.com" rel="preconnect">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+  <link href="vendor/quill/quill.snow.css" rel="stylesheet">
+  <link href="vendor/quill/quill.bubble.css" rel="stylesheet">
+  <link href="vendor/remixicon/remixicon.css" rel="stylesheet">
+  <link href="vendor/simple-datatables/style.css" rel="stylesheet">
+
+  <!-- Template Main CSS File -->
+  <link href="css/style.css" rel="stylesheet">
+
+  <!-- =======================================================
+  * Template Name: NiceAdmin - v2.5.0
+  * Template URL: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/
+  * Author: BootstrapMade.com
+  * License: https://bootstrapmade.com/license/
+  ======================================================== -->
+</head>
+
+<body>
+
+  <!-- ======= Header ======= -->
+  <header id="header" class="header fixed-top d-flex align-items-center">
+
+    <div class="d-flex align-items-center justify-content-between">
+      <a href="index.html" class="logo d-flex align-items-center">
+        <img src="img/logo.png" alt="">
+        <span class="d-none d-lg-block">CEG Events</span>
+      </a>
+      <i class="bi bi-list toggle-sidebar-btn"></i>
+    </div><!-- End Logo -->
+
+    <div class="search-bar">
+      <form class="search-form d-flex align-items-center" method="POST" action="#">
+        <input type="text" name="query" placeholder="Search" title="Enter search keyword">
+        <button type="submit" title="Search"><i class="bi bi-search"></i></button>
+      </form>
+    </div><!-- End Search Bar -->
+
+    <nav class="header-nav ms-auto">
+      <ul class="d-flex align-items-center">
+
+        <li class="nav-item d-block d-lg-none">
+          <a class="nav-link nav-icon search-bar-toggle " href="#">
+            <i class="bi bi-search"></i>
+          </a>
+        </li><!-- End Search Icon-->
+
+        <li class="nav-item dropdown">
+
+          <!-- End Notification Icon -->
+
+          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications">
+          
+          </ul><!-- End Notification Dropdown Items -->
+
+        </li><!-- End Notification Nav -->
+
+        <li class="nav-item dropdown">
+
+          <!-- End Messages Icon -->
+
+          <!-- End Messages Dropdown Items -->
+
+        </li><!-- End Messages Nav -->
+
+        <li class="nav-item dropdown pe-3">
+          <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
+            <img src="img/default.png" alt="Profile" class="rounded-circle">
+            <span class="d-none d-md-block dropdown-toggle ps-2"><%= user %></span>
+          </a><!-- End Profile Iamge Icon -->
+
+          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
+            <li class="dropdown-header">
+              <h6>Event Admin</h6>
+              <span><%= user %></span>
+            </li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+
+            <li>
+              <a class="dropdown-item d-flex align-items-center" href="#">
+                <i class="bi bi-box-arrow-right"></i>
+                <span>Sign Out</span>
+              </a>
+            </li>
+
+          </ul><!-- End Profile Dropdown -->
+        </li><!-- End Profile Nav -->
+
+      </ul>
+    </nav><!-- End Icons Navigation -->
+
+  </header><!-- End Header -->
+
+  <!-- ======= Sidebar ======= -->
+  <aside id="sidebar" class="sidebar">
+
+    <ul class="sidebar-nav" id="sidebar-nav">
+
+      <li class="nav-item">
+        <a class="nav-link " href="/adminMain">
+          <i class="bi bi-grid"></i>
+          <span>Dashboard</span>
+        </a>
+      </li><!-- End Dashboard Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-menu-button-wide"></i><span>Components</span></i>
+        </a>
+      </li><!-- End Components Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#forms-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-journal-text"></i><span>Forms</span></i>
+        </a>
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#tables-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-layout-text-window-reverse"></i><span>Tables</span></i>
+        </a>
+    
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#charts-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-bar-chart"></i><span>Charts</span></i>
+        </a>
+       
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#icons-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-gem"></i><span>Icons</span></i>
+        </a>
+
+      <li class="nav-heading">Pages</li>
+
+      <!-- End Profile Page Nav -->
+<!-- End F.A.Q Page Nav -->
+
+      <!-- End Contact Page Nav -->
+
+      <!-- End Register Page Nav -->
+
+     <!-- End Login Page Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="pages-error-404.html">
+          <i class="bi bi-dash-circle"></i>
+          <span>Error 404</span>
+        </a>
+      </li><!-- End Error 404 Page Nav -->
+
+      <!-- End Blank Page Nav -->
+
+    </ul>
+
+  </aside><!-- End Sidebar-->
+
+  <main id="main" class="main">
+
+    
+
+    <div class="pagetitle">
+        <h1>Events</h1>
+        <!-- <div class="col"><h3><span class="badge bg-primary bx-pull-right">Welcome, <%= user %></span></h3></div> -->
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+          <li class="breadcrumb-item active">Add-Event</li>
+        </ol>
+      </nav>
+    </div><!-- End Page Title -->
+
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Add Event</h5>
+
+              <!-- Multi Columns Form -->
+              <form class="row g-3" action="/events" method="post">
+                <div class="col-md-4">
+                    <label for="inputZip" class="form-label">EventID</label>
+                    <input type="number" class="form-control" id="inputZip" value="<%= data[0]['eventID'] %>" disabled>
+                    <input type="number" name="eventid" value="<%= data[0]['eventID'] %>" hidden>
+                  </div>
+                <div class="col-md-8">
+                  <label for="inputName5" class="form-label">Event Name</label>
+                  <input type="text" name="ename" class="form-control" id="inputName5" value="<%= data[0]['eventname'] %>" disabled> 
+                </div>
+               
+
+              </form><!-- End Multi Columns Form -->
+            </div>
+          </div>
+
+          <section class="section dashboard">
+            <div class="row">
+        <a href="#basicModal" data-bs-toggle="modal">
+              <!-- Left side columns -->
+              <div class="col-lg-12">
+                <div class="row">
+                  <!-- Sales Card -->
+                  <div class="col-xxl-3 col-md-6">
+                    <div class="card info-card sales-card">
+                      <div class="card-body">
+                        <h5 class="card-title">Description </h5>
+                         <div class="d-flex align-items-center">
+                          <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                            <i class="bi bi-plus"></i>
+                          </div>
+                          <div class="ps-3">
+                            <h6></h6>
+                            <span class="text-success small pt-1 fw-bold"></span> <span class="text-muted small pt-2 ps-1"></span>
+      
+                          </div>
+                        </div>
+                      </div>
+                    </a>
+                    </div>
+                  </div><!-- End Sales Card -->
+                
+                  <div class="modal fade" id="basicModal" tabindex="-1">
+                    <div class="modal-dialog">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title">Add Description for Event</h5>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form action="/addEventDetails" method="post">
+                            <div class="form-floating">
+                              <input type="number" name="eventid" value="<%= data[0]['eventID'] %>" hidden>
+                                <textarea class="form-control" placeholder="Description" name="desc" id="floatingTextarea" style="height: 100px;"></textarea>
+                                <label for="floatingTextarea">Description</label>
+                            </div>  
+                        </div>
+                        <div class="modal-footer">
+                          <button type="reset" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                          <button type="submit" class="btn btn-primary">Save changes</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div><!-- End Basic Modal-->
+      
+                  <!-- Revenue Card -->
+             
+                  <div class="col-xxl-3 col-md-6">
+                    <div class="card info-card revenue-card">
+                      <div class="card-body">
+                        <h5 class="card-title">Rules</h5>
+                        <a href="#basicModal2" data-bs-toggle="modal">
+                        <div class="d-flex align-items-center">
+                          <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                            <i class="bi bi-plus"></i>
+                          </div>
+                          <div class="ps-3">
+                            <h6></h6>
+                            <span class="text-success small pt-1 fw-bold"></span> <span class="text-muted small pt-2 ps-1"></span>
+                          </div>
+                        </div>
+                    </a>
+                      </div>
+                    </div>
+                  </div><!-- End Revenue Card -->
+
+                  <div class="modal fade" id="basicModal2" tabindex="-1">
+                    <div class="modal-dialog">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title">Add Rules for Event</h5>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                        
+                            <div class="form-floating">
+                              <input type="number" name="eventid" value="<%= data[0]['eventID'] %>" hidden>
+                                <textarea class="form-control" placeholder="Description" name="rule" id="floatingTextarea" style="height: 100px;"></textarea>
+                                <label for="floatingTextarea">Rules</label>
+                              </div>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="reset" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                          <button type="submit" class="btn btn-primary">Save changes</button>
+                        </div>
+                    
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-xxl-3 col-md-6">
+                    <div class="card info-card revenue-card">
+      
+                      <div class="card-body">
+                        <h5 class="card-title">Rounds</h5>
+                        <a href="#basicModal3" data-bs-toggle="modal">
+                        <div class="d-flex align-items-center">
+                          <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                            <i class="bi bi-plus"></i>
+                          </div>
+                          <div class="ps-3">
+                            <h6></h6>
+                            <span class="text-success small pt-1 fw-bold"></span> <span class="text-muted small pt-2 ps-1"></span>
+                          </div>
+                        </div>
+                      </div>
+                    </a>
+                    </div>
+                  </div>
+
+                  <div class="modal fade" id="basicModal3" tabindex="-1">
+                    <div class="modal-dialog">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title">Add Rules for Event</h5>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                          <div class="form-floating">
+                            <input class="form-control" placeholder="Rounds Description" name="roundname" id="floatingTextarea" >
+                            <label for="floatingTextarea">Round Name</label>
+                          </div>
+                               <br>
+                            <div class="form-floating">
+                                <textarea class="form-control" placeholder="Rounds Description" name="rounddesc" id="floatingTextarea" style="height: 100px;"></textarea>
+                                <label for="floatingTextarea">Rounds Description</label>
+                              </div>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="reset" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                          <button type="submit" class="btn btn-primary">Save changes</button>
+                        </div>
+                      </form>
+                      </div>
+                    </div>
+                  </div>
+      
+                  <!-- Customers Card -->
+                  <div class="col-xxl-3 col-xl-12">
+                    <div class="card info-card customers-card">
+                      <div class="card-body">
+                        <h5 class="card-title">Contact Details</h5>
+                        <a href="#basicModal4" data-bs-toggle="modal">
+                        <div class="d-flex align-items-center">
+                          <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                            <i class="bi bi-plus"></i>
+                          </div>
+                          <div class="ps-3">
+                            <h6></h6>
+                            <span class="text-danger small pt-1 fw-bold"></span> <span class="text-muted small pt-2 ps-1"></span>
+                          </div>
+                        </div>
+                      </div>
+                    </a>
+                    </div>
+                  </div><!-- End Customers Card -->
+
+                  <div class="modal fade" id="basicModal4" tabindex="-1">
+                    <div class="modal-dialog">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title">Add Contact Details</h5>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form>
+                                <div class="form-floating">
+                                    <label for="inputName5" class="form-label">Name</label>
+                                    <input type="text" name="ename" class="form-control" id="inputName5" value=""> 
+                             </div><br>
+                             <div class="form-floating">
+                                <label for="inputName5" class="form-label">Contact Number</label>
+                                <input type="text" name="ename" class="form-control" id="inputName5" value=""> 
+                         </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                          <button type="button" class="btn btn-primary">Save changes</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+      
+                </div><!-- End Website Traffic -->
+              </div>
+      
+            </div>
+          </section>
+
+  </main><!-- End #main -->
+
+  <!-- ======= Footer ======= -->
+  <footer id="footer" class="footer">
+    <div class="copyright">
+      &copy; Copyright <strong><span>CEG-Events</span></strong>. All Rights Reserved
+    </div>
+    <div class="credits">
+      <!-- All the links in the footer should remain intact. -->
+      <!-- You can delete the links only if you purchased the pro version. -->
+      <!-- Licensing information: https://bootstrapmade.com/license/ -->
+      <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/ -->
+      Designed by <a href="https://bootstrapmade.com/">CEG-Management</a>
+    </div>
+  </footer><!-- End Footer -->
+
+  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+  <!-- Vendor JS Files -->
+  <script src="vendor/apexcharts/apexcharts.min.js"></script>
+  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="vendor/chart.js/chart.umd.js"></script>
+  <script src="vendor/echarts/echarts.min.js"></script>
+  <script src="vendor/quill/quill.min.js"></script>
+  <script src="vendor/simple-datatables/simple-datatables.js"></script>
+  <script src="vendor/tinymce/tinymce.min.js"></script>
+  <script src="vendor/php-email-form/validate.js"></script>
+
+  <!-- Template Main JS File -->
+  <script src="js/main.js"></script>
+
+</body>
+
+</html>

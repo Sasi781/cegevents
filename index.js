@@ -2,7 +2,6 @@ const express = require('express')
 var nodemailer = require('nodemailer');
 const {model}=require('mongoose')
 const app = express()
-//comment added
 const excelJs = require("exceljs")
 var fs = require("fs")
 const xl = require('excel4node');
@@ -31,7 +30,7 @@ app.engine('html', require('ejs').renderFile);
 app.set('view engine','ejs')
 var User = "",ses;
 
-const oneDay = 86400000;
+const oneDay = 3600000;
 app.use(sessions({
     secret: "thisismysecrctekeyfhrgfgrfrty84fwir767",
     saveUninitialized:true,
@@ -1727,8 +1726,9 @@ app.get('/feedback/:email',(req,res)=>{
   })
 })
 app.get('/logout',(req,res)=>{
+  req.session.email=null;
   req.session.destroy();
-  ses=""
+  
   console.log(req.session)
   res.render("register.ejs",{"msg":""})
 })
