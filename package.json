@@ -6,6 +6,9 @@
   "scripts": {
     "start": "index.js"
   },
+  "engines": {
+    "node": ">=16 <17"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
