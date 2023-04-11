@@ -33,6 +33,7 @@ var User = "",ses;
 const oneDay = 3600000;
 app.use(sessions({
     secret: "thisismysecrctekeyfhrgfgrfrty84fwir767",
+    resave: false,
     saveUninitialized:true,
     cookie: { maxAge: oneDay },
     store
@@ -248,9 +249,10 @@ app.post('/changePassword',(req,res)=>{
       }
       else{
         console.log(doc)
+        res.render("register.ejs",{"msg":"Updated Successfully"});
       }
     })
-    res.render("register.ejs",{"msg":""});
+    
   }
   else{
     res.render("change_password.ejs",{"email":req.body.email,"msg":"Password Mismatch"});
@@ -270,6 +272,9 @@ app.get('/login',(req,res)=>{
   else{
     res.render("register.ejs",{"msg":""})
   }
+})
+app.get('/original_register',(req,res)=>{
+  res.render("original-register.ejs",{msg:""});
 })
 app.post('/login',(req,res)=>{
   
@@ -420,7 +425,7 @@ app.post('/register',(req,res)=>{
             console.log(err)
           }
           else if(doc.length>0){
-            res.render("register.ejs",{"msg":"EMAIL ALREADY EXISTS"})
+            res.render("original-register.ejs",{"msg":"EMAIL ALREADY EXISTS"})
           }
           else{
             console.log(req.body.email)
@@ -464,7 +469,7 @@ app.post('/register',(req,res)=>{
         }) 
        }
       else{
-        res.render("register.ejs",{"msg":"PASSWORD MISMATCH"})
+        res.render("original-register.ejs",{"msg":"PASSWORD MISMATCH"})
       } 
 })
 
