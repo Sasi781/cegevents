@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "index.js"
+    "start": "nodemon index.js"
   },
   "engines": {
     "node": ">=16 <17"
@@ -25,7 +25,7 @@
     "mongodb": "^5.0.1",
     "mongoose": "^6.9.1",
     "nodemailer": "^6.9.1",
-    
+    "nodemon":"^2.0.20",
     "otp-generator": "^4.0.1",
     "save": "^2.9.0",
     "svg": "^0.1.0",

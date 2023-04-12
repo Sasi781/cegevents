@@ -1288,6 +1288,7 @@ app.get('/export',(req,res)=>{
          {header:"Food Requried",key:"food",width:25},
          {header:"Feedback",key:"feed",width:25},
          {header:"Amount Paid",key:"amt",width:25},
+         {header:"Vacated/Not",key:"flag",width:25},
         ]
         
        
@@ -1295,12 +1296,15 @@ app.get('/export',(req,res)=>{
         
         for(i=0;i<doc.length;i++){
           var m = "";
+          var status;
           if(doc[i]["mode"] == "online"){
             m = doc[i]["mode"]+"/"+doc[i]["tid"]
           }
           else{
             m = doc[i]["mode"]
           }
+          if(doc[i]["flag"]==1) status="Not Vacated"
+          else status="Vacated"
           sheet.addRow({
             kid:doc[i]["KID"],
             name:doc[i]["name"],
@@ -1317,6 +1321,7 @@ app.get('/export',(req,res)=>{
             food:doc[i]["food"],
             feed:doc[i]["feedback"],
             amt:doc[i]["amount"],
+            flag:status,
           })
         }
 
