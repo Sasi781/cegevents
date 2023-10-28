@@ -87,7 +87,7 @@
         <li class="nav-item dropdown pe-3">
           <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
             <img src="img/default.png" alt="Profile" class="rounded-circle">
-            <span class="d-none d-md-block dropdown-toggle ps-2"><%= user %></span>
+            <span class="d-none d-md-block dropdown-toggle ps-2"><%= user %></span> 
           </a><!-- End Profile Iamge Icon -->
 
           <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
@@ -100,7 +100,7 @@
             </li>
 
             <li>
-              <a class="dropdown-item d-flex align-items-center" href="#">
+              <a class="dropdown-item d-flex align-items-center" href="/logout">
                 <i class="bi bi-box-arrow-right"></i>
                 <span>Sign Out</span>
               </a>
@@ -120,21 +120,21 @@
     <ul class="sidebar-nav" id="sidebar-nav">
 
       <li class="nav-item">
-        <a class="nav-link " href="/adminMain">
+        <a class="nav-link " href="3">
           <i class="bi bi-grid"></i>
           <span>Dashboard</span>
         </a>
       </li><!-- End Dashboard Nav -->
 
       <li class="nav-item">
-        <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
-          <i class="bi bi-menu-button-wide"></i><span>Components</span></i>
+        <a class="nav-link collapsed"  href="/makeAttendence/<%= data[0]['eventID'] %>">
+          <i class="bi bi-menu-button-wide"></i><span>Make Attendence</span></i>
         </a>
       </li><!-- End Components Nav -->
 
       <li class="nav-item">
-        <a class="nav-link collapsed" data-bs-target="#forms-nav" data-bs-toggle="collapse" href="#">
-          <i class="bi bi-journal-text"></i><span>Forms</span></i>
+        <a class="nav-link collapsed" href="/resultPublish/<%= data[0]['eventID'] %>">
+          <i class="bi bi-journal-text"></i><span>Result Publish</span></i>
         </a>
 
       <li class="nav-item">
@@ -155,15 +155,6 @@
         </a>
 
       <li class="nav-heading">Pages</li>
-
-      <!-- End Profile Page Nav -->
-<!-- End F.A.Q Page Nav -->
-
-      <!-- End Contact Page Nav -->
-
-      <!-- End Register Page Nav -->
-
-     <!-- End Login Page Nav -->
 
       <li class="nav-item">
         <a class="nav-link collapsed" href="pages-error-404.html">
@@ -192,30 +183,52 @@
 
           <div class="card">
             <div class="card-body">
+              <div class="row">
               <h5 class="card-title">Add Event</h5>
-
-              <!-- Multi Columns Form -->
-              <form class="row g-3" action="/events" method="post">
-                <div class="col-md-4">
+               
+                <div class="col">
+                <div class="col-md-8">
                     <label for="inputZip" class="form-label">EventID</label>
                     <input type="number" class="form-control" id="inputZip" value="<%= data[0]['eventID'] %>" disabled>
                     <input type="number" name="eventid" value="<%= data[0]['eventID'] %>" hidden>
                   </div>
+                  <br/>
                 <div class="col-md-8">
                   <label for="inputName5" class="form-label">Event Name</label>
                   <input type="text" name="ename" class="form-control" id="inputName5" value="<%= data[0]['eventname'] %>" disabled> 
                 </div>
-                <div class="col-md-8">
-                  <label for="inputName5" class="form-label">Event Img Link</label>
-                  <input type="text" name="" placeholder="Img drive link" class="form-control" id="inputName5" value="""> 
-                </div>
-                
+              </div>
               
-
+              <div class="col">
+                <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
+                  <img id="image" src="https://drive.google.com/uc?export=view&id=<%= data[0]['eventimg'] %>"  style="height: 150px; width: 150px;" class="rounded-circle" >
+                </div>
+              </div>
+              </div>
+             
+                <div class="col-md-12">
+                  <form method="post" action="/eventimg">
+                  <label for="inputName5" class="form-label">Event Img Link</label>
+                  <div class="row">
+                  <div class="col-md-8">
+                  <input type="text" name="img" placeholder="Img drive link"  class="form-control" id="inputName5" value=""> 
+              
+                      <input type="number" name="eventid" value="<%= data[0]['eventID'] %>" hidden>
+                    </div>
+                      <br/>
+                    <div class="col">  
+                      <button type="submit" class="btn btn-primary" >POST</button>
+                    </div>
+                  </div>
+                    </form>
+                  </div>
+                </div>
               </form><!-- End Multi Columns Form -->
             </div>
-          </div>
+          
 
+          <form class="row g-3" action="/addEventDetails" method="post">
+            <input type="number" name="eventid" value="<%= data[0]['eventID'] %>" hidden>
           <section class="section dashboard">
             <div class="row">
         <a href="#basicModal" data-bs-toggle="modal">
@@ -234,7 +247,6 @@
                           <div class="ps-3">
                             <h6></h6>
                             <span class="text-success small pt-1 fw-bold"></span> <span class="text-muted small pt-2 ps-1"></span>
-      
                           </div>
                         </div>
                       </div>
@@ -410,6 +422,14 @@
             </div>
           </section>
   </main><!-- End #main -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+  <script>
+     const img = document.getElementById("image")
+   img.addEventListener("error", function(event) {
+  event.target.src = "img/default.png"
+  event.onerror = null
+})
+  </script>
 
   <!-- ======= Footer ======= -->
   <footer id="footer" class="footer">
@@ -438,7 +458,9 @@
   <script src="vendor/php-email-form/validate.js"></script>
 
   <!-- Template Main JS File -->
-  <script src="js/main.js"></script>
+  <script src="js/main.js">
+
+  </script>
 
 </body>
 

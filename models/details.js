@@ -47,6 +47,12 @@ const userSchema=new mongoose.Schema({
     },
     img:{
         type:String,
+    },
+    eventList:{
+        type:Array
+    },
+    attended_events:{
+        type:Object
     }
 });
 module.exports=User=mongoose.model("details",userSchema)

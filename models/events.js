@@ -48,6 +48,18 @@ const userSchema=new mongoose.Schema({
     },
     rounddesc:{
         type:Array
+    },
+    eventimg:{
+        type:String
+    },
+    studentList:{
+        type:Array
+    },
+    attendence:{
+        type:Object
+    },
+    result:{
+        type:Object
     }
 });
 module.exports=User=mongoose.model("events",userSchema)

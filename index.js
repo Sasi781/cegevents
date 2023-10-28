@@ -63,7 +63,13 @@ app.get('/validate',(req,res)=>{
      res.render("register.ejs",{"msg":""})
   }
   else{
-     res.render("index.ejs",{"user":req.session.email,"msg":"first"});
+     details.find({email:req.session.email},(err,doc)=>{
+       if(err) console.log(err)
+       else{
+        res.render("index.ejs",{"user":req.session.email,"msg":"first","data":doc});
+       }
+     })
+    //  res.render("index.ejs",{"user":req.session.email,"msg":"first"});
     //  res.render("registration_form.ejs",{user:req.session.email});
   }
 })
@@ -142,46 +148,49 @@ app.post('/send',async (req,res)=>{
 })
 
 app.get('/',(req,res)=>{
-  console.log(req.session)
-  console.log(req.session.email)
-  if(req.session.email){
-    let value=0
-    register.findOne({email:req.session.email},(err,doc)=>{
-      if(err) console.log(err)
-      else{
-        console.log(doc)
-        if(doc['role']==3 && doc['details']=="Entered") value= 1
-        else if(doc['role']==3 && doc['details']!="Entered") value= 2
-        else if(doc['role']==1) value=3
-        else if(doc['role']==2) value=4
-        else if(doc['role']==4) value=5
-        if(value==1) res.render('index.ejs',{"user":req.session.email,"msg":""})
-        else if(value==2) res.render('index.ejs',{"user":req.session.email,"msg":"first"})
-        else if(value==3){
-          events.countDocuments({},(err,doc)=>{
-            user.countDocuments({$or:[{role:4},{role:2}]},(err,doc1)=>{
-              console.log(doc1)
-              console.log(doc)
-              var data={
-              user:req.session.email,
-              eventCount:doc,
-              admin:doc1,
-            }
-            res.render("admin/index-admin.ejs",{data:data});
-            })
-          })
-        }
-        else if(value==4){
-          var data={
-            username:req.session.email
-          }
-          res.render("hostel-admin/dashboard.ejs",{data:data});
-        }
-      }
-    })
+  
+  res.render('register.ejs',{msg:""})
+  // console.log(req.session)
+  // console.log(req.session.email)
+  // if(req.session.email){
+  //   let value=0
+  //   register.findOne({email:req.session.email},(err,doc)=>{
+  //     if(err) console.log(err)
+  //     else{
+  //       console.log(doc)
+  //       if(doc['role']==3 && doc['details']=="Entered") value= 1
+  //       else if(doc['role']==3 && doc['details']!="Entered") value= 2
+  //       else if(doc['role']==1) value=3
+  //       else if(doc['role']==2) value=4
+  //       else if(doc['role']==4) value=5
+  //       if(value==1) res.render('index.ejs',{"user":req.session.email,"msg":""})
+  //       else if(value==2) res.render('index.ejs',{"user":req.session.email,"msg":"first"})
+  //       else if(value==3){
+  //         events.countDocuments({},(err,doc)=>{
+  //           user.countDocuments({$or:[{role:4},{role:2}]},(err,doc1)=>{
+  //             console.log(doc1)
+  //             console.log(doc)
+  //             var data={
+  //             user:req.session.email,
+  //             eventCount:doc,
+  //             admin:doc1,
+  //           }
+  //           res.render("admin/index-admin.ejs",{data:data});
+  //           })
+  //         })
+  //       }
+  //       else if(value==4){
+  //         var data={
+  //           username:req.session.email
+  //         }
+  //         res.render("hostel-admin/dashboard.ejs",{data:data});
+  //       }
+  //     }
+  //   })
     
-  }
-   else res.render("register.ejs",{msg:""})
+  // }
+  //  else res.render("register.ejs",{msg:""})
+
 })
 
 app.get('/forget-pass',(req,res)=>{
@@ -260,18 +269,23 @@ app.post('/changePassword',(req,res)=>{
 })
 
 app.get('/dashboard',(req,res)=>{
-
-  res.render("index.ejs",{"user":ses.email,"msg":""})
+  details.find({email:req.session.email},(err,doc)=>{
+    if(err) console.log(err)
+    else{
+     res.render("index.ejs",{"user":req.session.email,"msg":"first","data":doc});
+    }
+  })
 })
 
 app.get('/login',(req,res)=>{
   // ses=req.session.email;
-  if(req.session.email){
-    res.render('index.ejs',{"user":req.session.email,"msg":""})
-  }
-  else{
-    res.render("register.ejs",{"msg":""})
-  }
+  res.render("register.ejs",{"msg":""})
+  // if(req.session.email){
+  //   res.render('index.ejs',{"user":req.session.email,"msg":""})
+  // }
+  // else{
+  //   res.render("register.ejs",{"msg":""})
+  // }
 })
 app.get('/original_register',(req,res)=>{
   res.render("original-register.ejs",{msg:""});
@@ -310,10 +324,21 @@ app.post('/login',(req,res)=>{
       req.session.save()
       console.log(req.session)
       if(doc[0].details=="NotEntered"){
-        res.render("index.ejs",{"user":req.session.email,"msg":"first"});
+        details.find({email:req.session.email},(err,doc1)=>{
+          if(err) console.log(err)
+          else{
+           res.render("index.ejs",{"user":req.session.email,"msg":"first","data":doc1});
+          }
+        })
+
       }
       else{
-        res.render("index.ejs",{"user":req.session.email,"msg":""});
+        details.find({email:req.session.email},(err,doc1)=>{
+          if(err) console.log(err)
+          else{
+           res.render("index.ejs",{"user":req.session.email,"msg":"","data":doc1});
+          }
+        })
       }
     }
 
@@ -727,7 +752,8 @@ app.get('/eventDetails',(req,res)=>{
       console.log(err)
     }
     else{
-      res.render("admin/event-details.ejs",{data:doc})
+      console.log(doc)
+      res.render('admin/event-details.ejs',{"user":req.session.email,"data":doc});
     }
   })
 })
@@ -784,11 +810,6 @@ app.post('/deleteHostelStudent',(req,res)=>{
               res.render('hostel-admin/tableHostelpage.ejs',{data:doc,count:count,hname:hostelname,room:room,floor:floor,gender:gender})
             }
           })
-         
-
-
-
-
         }
       })
     }
@@ -811,7 +832,7 @@ app.get('/adminDetails',(req,res)=>{
         else{
           console.log(doc.length)
           for(i=0;i<doc.length;i++){
-            adminData['eventID'] = 0000
+            adminData['eventID'] = 0
             adminData['eventname'] = "Hostel"
             adminData['date'] = "Hostel"
             adminData['venue'] = "Hostel"
@@ -846,7 +867,13 @@ app.get('/eventDelete/:ID',(req,res)=>{
           console.log(err)
         }
         else{
-          res.render("admin/event-details.ejs",{data:doc})
+          details.find({email:req.session.email},(err,doc2)=>{
+            if(err) console.log(err)
+            else{
+              console.log(doc2)
+              res.render('event-details.ejs',{"user":req.session.email,"data":doc,"data2":doc2});
+            }
+           })
         }
       })
     }
@@ -1347,7 +1374,156 @@ app.get('/export',(req,res)=>{
     }
   })
 })
+app.get('/makeAttendence/:id',(req,res)=>{
+  events.find({'eventID':req.params.id},(err,doc)=>{
+    if(err) console.log(err)
+    else{
+      res.render('event-admin/attendence.ejs',{data:doc})
+    }
+  })
+})
+app.get('/makePresent/:id/:eventname',(req,res)=>{
+  console.log(req.params.id)
 
+  var pair={}
+  details.find({email:req.params.id},(err,doc)=>{
+    if(err) console.log(doc)
+    else{
+      if(doc[0]['attended_events']){
+          pair=doc[0]['attended_events']
+      }
+      pair[req.params.eventname] = 0;
+      details.updateMany({email:req.params.id},{$set:{attended_events:pair}},(err,doc)=>{
+        if(err){
+          console.log(err)
+        }
+        else{
+          console.log(doc)
+        }
+      })
+    }
+  })
+
+  var pair={}
+  events.find({'eventID':req.params.eventname},(err,doc)=>{
+    if(err) console.log(err)
+    else{
+      if(doc[0]['attendence']){
+        pair=doc[0]['attendence']
+      }
+      pair[req.params.id]=0;
+      events.updateMany({'eventID':req.params.eventname},{$set:{attendence:pair}},(err,doc)=>{
+        if(err) console.log(err)
+        else{
+          events.find({'eventID':req.params.eventname},(err,doc)=>{
+            if(err) console.log(err)
+            else res.render('event-admin/attendence.ejs',{data:doc})
+          })
+        }
+      })
+    }
+  })
+})
+
+app.post('/assign_marks',(req,respond)=>{
+  //  console.log("Hi");
+   var pair={}
+  //  console.log(req.body)
+   pair=req.body
+   keys=Object.keys(pair)
+  //  console.log(keys)
+  //  delete pair.eid
+  //  console.log(pair[keys[0]])
+  var list = {}
+  // Object.keys(pair).sort().forEach(b=>list[b]=pair[b])
+  // console.log(list)
+  
+keysSorted = Object.keys(pair).sort(function(a,b){return pair[b]-pair[a]})
+// console.log(keysSorted); 
+
+for(let i=1;i<keysSorted.length;i++){
+  list[keysSorted[i]]=pair[keysSorted[i]]
+}
+// console.log(list)
+marks = Object.values(list)
+// console.log(marks);
+unique_marks=[...new Set(marks)];
+var res=unique_marks.splice(0,3)
+
+// var ans={}
+for(let i=1;i<keysSorted.length;i++){
+  if(list[keysSorted[i]] == res[0]){
+    list[keysSorted[i]] = 1;
+  }
+  else if(list[keysSorted[i]] == res[1]){
+    list[keysSorted[i]] = 2;
+  }
+  else if(list[keysSorted[i]] == res[2]){
+    list[keysSorted[i]] = 3;
+  }
+  else{
+    list[keysSorted[i]] = '-';
+  }
+}
+
+// console.log(list)
+
+console.log(keysSorted)
+for(let i=1;i<keysSorted.length;i++){
+  details.find({email:keysSorted[i]},(err,doc)=>{
+    if(err) console.log(err)
+    else{
+      // console.log(list)
+    var result={}
+    result=doc[0]['attended_events']
+    console.log(keysSorted[i])
+    console.log(list[keysSorted[i]])
+    result[req.body.eid] = list[keysSorted[i]]
+    console.log(result)
+    details.updateMany({email:keysSorted[i]},{$set:{attended_events:result}},(err,doc)=>{
+      if(err) console.log(err)
+      else{
+              
+      }
+    })
+    }
+    
+  })
+}
+events.updateMany({eventID:req.body.eid},{$set:{attendence:list}},(err,doc)=>{
+  if(err) console.log(err)
+  else{
+    var resPublish={}
+    for(let k=1;k<keysSorted.length;k++){
+      if(list[keysSorted[k]]!='-') resPublish[keysSorted[k]]=list[keysSorted[k]]
+    }
+    events.updateMany({eventID:req.body.eid},{$set:{result:resPublish}},(err,doc)=>{
+      if(err) console.log(err)
+      else{
+        console.log(doc)
+        events.find({'eventID':req.body.eid},(err,doc)=>{
+          if(err) console.log(err)
+          else{
+              respond.render('event-admin/result-publish.ejs',{data:doc,msg:'published'})
+          }
+        })
+      }
+    })
+  }
+})  
+
+
+})
+
+app.get('/resultPublish/:id',(req,res)=>{
+  events.find({'eventID':req.params.id},(err,doc)=>{
+    if(err) console.log(err)
+    else{
+      if(doc[0]['result']) res.render('event-admin/result-publish.ejs',{data:doc,msg:'published'})
+      else res.render('event-admin/result-publish.ejs',{data:doc,msg:''})
+    }
+  })
+})
 app.post('/hostelBookingManual',(req,res)=>{
   console.log("HostelManual")
   console.log(req.body.check1+" "+req.body.check4)
@@ -1429,11 +1605,6 @@ app.post('/hostelBookingManual',(req,res)=>{
            
           }
         })
-      
-
-
-
-          
         }
       else{
         hostelStudents.find({$and: [ { hostelname:req.body.hname  }, { roomno:req.body.hroom },{"flag":1} ]},(err,doc)=>{
@@ -1559,7 +1730,12 @@ app.post('/hostelBooking',(req,res)=>{
 app.get('/adminUser',(req,res)=>{
   console.log("hi")
   if(ses){
-    res.render('index.ejs',{"user":req.session.email,"msg":""})
+    details.find({email:req.session.email},(err,doc)=>{
+      if(err) console.log(err)
+      else{
+       res.render("index.ejs",{"user":req.session.email,"msg":"","data":doc});
+      }
+    })
   }
   else{
     // res.render("register.ejs",{"msg":""})
@@ -1703,8 +1879,37 @@ app.post('/addEventDetails',(req,res)=>{
           console.log(doc)
         }
        })
-
   }
+})
+
+app.post('/eventimg',(req,res)=>{
+  console.log("hi")
+  console.log(req.body)
+  var q=url.parse(req.body.img,true)
+  var val=q.pathname
+  let ans=""
+  let count=0
+  for(let i=0;i<val.length;i++){
+    if(count==3 && val[i]!='/') ans+=val[i]
+    if(val[i]=='/') count++
+  }
+  console.log(ans)
+  events.updateOne({eventID:req.body.eventid},{$set:{eventimg:ans}},(err,doc)=>{
+    if(err) console.log(err)
+    else{
+      console.log(doc)
+    }
+  })
+
+  events.find( { $or: [ { email1: req.session.email   }, { email2: req.session.email  } ] } ,(err,doc1)=>{
+    if(err) console.log(err)
+    else{
+      console.log(doc1)
+      res.render("event-admin/event_index.ejs",{"user":req.session.email,data:doc1})
+    }
+  })
+  // console.log(doc)
+
 })
 app.post('/getData',(req,res)=>{
   // console.log("GETDATA"+req.body.id)
@@ -1728,6 +1933,104 @@ app.post('/getData',(req,res)=>{
   })
   
 })
+
+
+app.get('/event_coding/:name/:user',(req,res)=>{
+   console.log(req.params.name);
+   events.find({"domain":req.params.name},(err,doc)=>{
+    if(err) console.log(err)
+    else{
+      console.log(doc)
+      res.render('view-events.ejs',{"user":req.params.user,"data":doc});
+    }
+   })
+})
+
+app.get('/event_details/:name/:user',(req,res)=>{
+  console.log(req.params.user);
+  events.find({"eventname":req.params.name},(err,doc)=>{
+   if(err) console.log(err)
+   else{
+     console.log(doc)
+     details.find({email:req.session.email},(err,doc2)=>{
+      if(err) console.log(err)
+      else{
+        console.log(doc2)
+        res.render('event-details.ejs',{"user":req.session.email,"data":doc,"data2":doc2});
+      }
+     })
+   }
+  })
+})
+
+app.get('/participated_events/:user',(req,res)=>{
+  var pair={}
+  details.find({email:req.params.user},(err,doc)=>{
+    if(err) console.log(err)
+    else{
+      keys=Object.keys(doc[0]['attended_events']);
+      console.log(keys)
+      for(let i=0;i<keys.length;i++){
+         events.find({eventID:keys[i]},(err,doc1)=>{
+          if(err) console.log(err)
+          else{
+            pair[doc1[0]['eventname']] = doc[0]['attended_events'][keys[i]]
+            console.log(pair)
+            res.render('participated_events.ejs',{user:req.params.user,list:pair})
+          }
+         })
+      }
+    }
+  })
+
+})
+
+
+app.get('/view-results/:user/:id',(req,res)=>{
+  console.log(req.params.user)
+  // console.log(doc[0])
+  details.find({email:req.params.user},(err,doc)=>{
+    if(err) console.log(err)
+    else{
+      events.find({eventID:req.params.id},(err,doc1)=>{
+        if(err) console.log(err)
+        else{
+          res.render('view-results.ejs',{"user":req.params.user,"data":doc,"data2":doc1})
+        }
+      })
+      // res.render('view-results.ejs',{"user":req.params.user,"data":doc})
+    }
+  })
+  
+})
+
+app.post('/registerEvent',(req,res)=>{
+  console.log("ENTERED")
+  events.updateMany({'eventID':req.body.eventName},{$push:{studentList:req.session.email}},(err,doc)=>{
+    if(err) console.log(err)
+    else{
+      details.updateMany({'email':req.session.email},{$push:{'eventList':req.body.eventName}},(err,doc1)=>{
+        if(err) console.log(err)
+        else{
+          events.find({'eventID':req.body.eventName},(err,doc)=>{
+            if(err) console.log(err)
+            else{
+              details.find({email:req.session.email},(err,doc2)=>{
+                if(err) console.log(err)
+                else{
+                  console.log(doc2)
+                  res.render('event-details.ejs',{"user":req.session.email,"data":doc,"data2":doc2});
+                }
+               })
+            }
+          })
+          
+        }
+      })
+    }
+  })
+})
+
 app.get('/feedback/:email',(req,res)=>{
   console.log(req.params.email)
   hostelStudents.updateMany({email:req.params.email},{$set:{feedback:"YES"}},(err,doc)=>{

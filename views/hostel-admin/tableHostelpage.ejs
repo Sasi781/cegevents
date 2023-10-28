@@ -143,7 +143,7 @@
               <hr class="dropdown-divider">
             </li>
             <li>
-              <a class="dropdown-item d-flex align-items-center" href="#">
+              <a class="dropdown-item d-flex align-items-center" href="/logout">
                 <i class="bi bi-box-arrow-right"></i>
                 <span>Sign Out</span>
               </a>
@@ -205,7 +205,6 @@
       <!-- End Blank Page Nav -->
     </ul>
   </aside><!-- End Sidebar-->
- 
   <main id="main" class="main">
     <a href="/deleteProcessing/<%= hname %>/<%= room %>"> <img src="/img/left-arrow.png" class="bx-pull-right"  width="40px" height="40px"></a>
     <div class="pagetitle">
@@ -220,7 +219,6 @@
     
     <section class="section dashboard">
       <div class="row">
-        <!-- Left side columns -->
         <div class="col-lg-12">
           <div class="row">
             <div class="col-12">
@@ -254,12 +252,14 @@
                         <td><%= data[i]['gender'] %></td>
                         <td><%= data[i]['hostelname'] %></td>
                         <td><%= data[i]['roomno'] %></td>
-                        <td><button type="button" class="btn btn-success" value="<%= data[i]['email'] %>" onclick="func($(this).val())">FeedBack</button></td>
+                        <% if(data[i]['feedback']=='NO'){ %>
+                        <td><button type="button" class="btn btn-success" id="<%= data[i]['KID'] %>" value="<%= data[i]['email'] %>" onclick="func($(this).val(),$(this).attr('id'))">FeedBack</button></td>
+                        <% } %>
+                        <% if(data[i]['feedback']=='YES'){ %>
+                          <td><button type="button" disabled class="btn btn-success" id="<%= data[i]['KID'] %>" value="<%= data[i]['email'] %>" onclick="func($(this).val(),$(this).attr('id'))">FeedBack</button></td>
+                        <% } %>
                         <td><button type="button" class="btn btn-danger" value="<%= data[i]['email'] %>" data-toggle="modal" data-target="#staticBackdrop">Vacate
                         </button></td>
-                        
-                        
-                       
                       </tr>
                       <% } %>
                     </tbody>
@@ -280,7 +280,7 @@
                     </div>
                     <div class="col-md-6">
                       <label for="inputName5" class="form-label">Student E-mail</label>
-                      <input type="text" name="email" class="form-control" value="" id="inputName5" required>
+                      <input type="email" name="email" class="form-control" value="" id="inputName5" required>
                     </div>
                     <div class="col-md-6">
                       <label for="inputEmail5" class="form-label">Name</label>
@@ -396,17 +396,12 @@
               </div>
             </div>
             <% } %>
-       
-        
     </section>
-   
-
   </main><!-- End #main -->
   <div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel">
     <div class="modal-dialog" >
         <div class="modal-content">
             <div class="modal-body">
-
                     <form action="/deleteHostelStudent" method="post">
                       <div class="form-floating">
                         <input type="text" name="studentEmail" class="form-control" id="sample" hidden >
@@ -435,7 +430,9 @@
             window.onunload = function () { null };
     </script>
     <script>
-      function func(value){
+      function func(value,id){
+        console.log(id)
+        $('#'+id).prop('disabled',true);
         $.ajax({
             url: "/feedback/"+value,
             type: "GET",

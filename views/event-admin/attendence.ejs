@@ -5,36 +5,35 @@
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-  <title>Forms / Layouts - NiceAdmin Bootstrap Template</title>
+  <title><%= data[0]['eventname'] %></title>
   <meta content="" name="description">
   <meta content="" name="keywords">
-
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link href="vendor/mdi-font/css/material-design-iconic-font.min.css" rel="stylesheet" media="all">
+  <link href="vendor/font-awesome-4.7/css/font-awesome.min.css" rel="stylesheet" media="all">
   <!-- Favicons -->
-  <link href="img/favicon.png" rel="icon">
-  <link href="img/apple-touch-icon.png" rel="apple-touch-icon">
+  <link href="/img/favicon.png" rel="icon">
+  <link href="/img/apple-touch-icon.png" rel="apple-touch-icon">
 
   <!-- Google Fonts -->
   <link href="https://fonts.gstatic.com" rel="preconnect">
   <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
 
   <!-- Vendor CSS Files -->
-  <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-  <link href="vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
-  <link href="vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
-  <link href="vendor/quill/quill.snow.css" rel="stylesheet">
-  <link href="vendor/quill/quill.bubble.css" rel="stylesheet">
-  <link href="vendor/remixicon/remixicon.css" rel="stylesheet">
-  <link href="vendor/simple-datatables/style.css" rel="stylesheet">
+  <link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+  <link href="/vendor/quill/quill.snow.css" rel="stylesheet">
+  <link href="/vendor/quill/quill.bubble.css" rel="stylesheet">
+  <link href="/vendor/remixicon/remixicon.css" rel="stylesheet">
+  <link href="/vendor/simple-datatables/style.css" rel="stylesheet">
 
   <!-- Template Main CSS File -->
-  <link href="css/style.css" rel="stylesheet">
-
-  <!-- =======================================================
-  * Template Name: NiceAdmin - v2.5.0
-  * Template URL: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/
-  * Author: BootstrapMade.com
-  * License: https://bootstrapmade.com/license/
-  ======================================================== -->
+  <link href="/css/style.css" rel="stylesheet">
 </head>
 
 <body>
@@ -43,9 +42,9 @@
   <header id="header" class="header fixed-top d-flex align-items-center">
 
     <div class="d-flex align-items-center justify-content-between">
-      <a href="index.html" class="logo d-flex align-items-center">
-        <img src="img/logo.png" alt="">
-        <span class="d-none d-lg-block">NiceAdmin</span>
+      <a href="#" class="logo d-flex align-items-center">
+        <img src="/img/logo.png" alt="">
+        <span class="d-none d-lg-block">CEG Events</span>
       </a>
       <i class="bi bi-list toggle-sidebar-btn"></i>
     </div><!-- End Logo -->
@@ -66,10 +65,10 @@
           </a>
         </li><!-- End Search Icon-->
 
-        
-
-
        
+
+        <li class="nav-item dropdown">
+
 
           <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow messages">
             <li class="dropdown-header">
@@ -129,12 +128,10 @@
           </ul><!-- End Messages Dropdown Items -->
 
         </li><!-- End Messages Nav -->
-
         <li class="nav-item dropdown pe-3">
-
           <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
-            <img src="img/default.png" alt="Profile" class="rounded-circle">
-            <span class="d-none d-md-block dropdown-toggle ps-2">admin@gmail.com</span>
+            <img src="/img/default.png" alt="Profile" class="rounded-circle">
+            <span class="d-none d-md-block dropdown-toggle ps-2">ADMIN</span>
           </a><!-- End Profile Iamge Icon -->
 
           <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
@@ -145,20 +142,16 @@
             <li>
               <hr class="dropdown-divider">
             </li>
-
             <li>
               <a class="dropdown-item d-flex align-items-center" href="/logout">
                 <i class="bi bi-box-arrow-right"></i>
                 <span>Sign Out</span>
               </a>
             </li>
-
           </ul><!-- End Profile Dropdown -->
         </li><!-- End Profile Nav -->
-
       </ul>
     </nav><!-- End Icons Navigation -->
-
   </header><!-- End Header -->
 
   <!-- ======= Sidebar ======= -->
@@ -174,8 +167,8 @@
       </li><!-- End Dashboard Nav -->
 
       <li class="nav-item">
-        <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
-          <i class="bi bi-menu-button-wide"></i><span>Components</span></i>
+        <a class="nav-link collapsed"  href="/makeAttendence/<%= data[0]['eventID'] %>">
+          <i class="bi bi-menu-button-wide"></i><span>Make Attendence</span></i>
         </a>
       </li><!-- End Components Nav -->
 
@@ -215,63 +208,93 @@
     </ul>
 
   </aside><!-- End Sidebar-->
-
+ 
   <main id="main" class="main">
-
+    <a href="#"> <img src="/img/left-arrow.png" class="bx-pull-right"  width="40px" height="40px"></a>
     <div class="pagetitle">
-      <h1>Admin</h1>
+     <h1>Hostel</h1>
       <nav>
         <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-          <li class="breadcrumb-item active">Add-admin</li>
+          <li class="breadcrumb-item"><a href="#">Home</a></li>
+          <li class="breadcrumb-item active">Add Students</li>
         </ol>
       </nav>
     </div><!-- End Page Title -->
-    <section class="section">
+    
+    <section class="section dashboard">
       <div class="row">
-        
-          <div class="card">
-            <div class="card-body">
-              <h5 class="card-title">Admin Details</h5>
-
-              <!-- Floating Labels Form -->
-              <form class="row g-3" action="/addAdmin" method="post">
-                <div class="col-md-12">
-                  <div class="form-floating">
-                    <input type="text" name="admin" class="form-control" id="floatingName" placeholder="Admin UserName">
-                    <label for="floatingName">Admin UserName</label>
-                  </div>
+        <!-- Left side columns -->
+        <div class="col-lg-8" style="margin-left: auto; margin-right: auto;">
+          <div class="row">
+            <div class="col-12">
+              <div class="card recent-sales overflow-auto">
+                <div class="card-body">
+                  <h5 class="card-title">Students List </h5>
+                  <h5 class=""><i></i></h5>
+                  <table class="table table-borderless datatable">
+                    <thead>
+                      <tr>
+                        <th scope="col">Student Email</th>
+                        <th scope="col">Attendence</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <% for(let i=0;i<data[0]['studentList'].length;i++){ %>
+                      <tr>
+                        <td><%= data[0]['studentList'][i] %></td>
+                        <% var flag=0 %>
+                        <% let keys=[] %>
+                        <% if(data[0]['attendence']){ %>
+                            <% keys=Object.keys(data[0]['attendence']) %>
+                            <% } %>
+                        <% if(!data[0]['attendence'] || !keys.includes(data[0]['studentList'][i]) ){ %>
+                            <% flag=1 %>
+                        <td><a href='/makePresent/<%= data[0]["studentList"][i] %>/<%= data[0]["eventID"] %>'><button type="button" class="btn btn-success rounded-pill" >Present</button></a></td>
+                        <% } %>
+                        <% if(flag==0){ %>
+                            <td><button type="button" class="btn btn-success rounded-pill"  disabled>Present</button></td>
+                            <% } %>
+                      </tr>
+                      <% } %>
+                    </tbody>
+                  </table>
                 </div>
-                <div class="col-md-12">
-                  <div class="form-floating">
-                    <input type="email" name="email" class="form-control" id="floatingEmail" placeholder="Email">
-                    <label for="floatingEmail">Email</label>
-                  </div>
-                </div>
-                <div class="col-md-12">
-                  <div class="form-floating">
-                    <input type="password" name="pass" class="form-control" id="floatingPassword" placeholder="Password">
-                    <label for="floatingPassword">Password</label>
-                  </div>
-                </div>
-                
-                
-                
-                
-                <div class="text-center">
-                  <button type="submit" class="btn btn-primary">Submit</button>
-                  <button type="reset" class="btn btn-secondary">Reset</button>
-                </div>
-              </form><!-- End floating Labels Form -->
-
+              </div>
             </div>
           </div>
-
         </div>
-      </div>
+    </div>
     </section>
-
   </main><!-- End #main -->
+  <div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel">
+    <div class="modal-dialog" >
+        <div class="modal-content">
+            <div class="modal-body">
+                    <form action="/deleteHostelStudent" method="post">
+                      <div class="form-floating">
+                        <input type="text" name="studentEmail" class="form-control" id="sample" hidden >
+                        Are you sure to vacate the person ?
+                        <br/>
+                        <br/>
+                        <div class="row">
+                          <div class="col"><input type="submit" class="btn btn-primary text-center bx-pull-right" value="Advance Returned" ></div>
+                          <div class="col"><input type="button" class="btn btn-secondary text-center" value="Close" data-dismiss="modal"></div>
+                        </div>
+                   </div>
+                  </form>
+            </div>
+        </div>
+    </div>
+  </div> 
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js">
+    </script>
+    <script type="text/javascript">
+      function preventBack() {
+                window.history.forward(); 
+            }
+            setTimeout("preventBack()", 0);  
+            window.onunload = function () { null };
+    </script>
 
   <!-- ======= Footer ======= -->
   <footer id="footer" class="footer">
@@ -283,24 +306,24 @@
       <!-- You can delete the links only if you purchased the pro version. -->
       <!-- Licensing information: https://bootstrapmade.com/license/ -->
       <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/ -->
-      Designed by <a href="https://bootstrapmade.com/">CEG-Management</a>
+      Designed by <a href="#">CEG-Management</a>
     </div>
   </footer><!-- End Footer -->
 
   <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 
   <!-- Vendor JS Files -->
-  <script src="vendor/apexcharts/apexcharts.min.js"></script>
-  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-  <script src="vendor/chart.js/chart.umd.js"></script>
-  <script src="vendor/echarts/echarts.min.js"></script>
-  <script src="vendor/quill/quill.min.js"></script>
-  <script src="vendor/simple-datatables/simple-datatables.js"></script>
-  <script src="vendor/tinymce/tinymce.min.js"></script>
-  <script src="vendor/php-email-form/validate.js"></script>
+  <script src="/vendor/apexcharts/apexcharts.min.js"></script>
+  <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="/vendor/chart.js/chart.umd.js"></script>
+  <script src="/vendor/echarts/echarts.min.js"></script>
+  <script src="/vendor/quill/quill.min.js"></script>
+  <script src="/vendor/simple-datatables/simple-datatables.js"></script>
+  <script src="/vendor/tinymce/tinymce.min.js"></script>
+  <script src="/vendor/php-email-form/validate.js"></script>
 
   <!-- Template Main JS File -->
-  <script src="js/main.js"></script>
+  <script src="/js/main.js"></script>
 
 </body>
 

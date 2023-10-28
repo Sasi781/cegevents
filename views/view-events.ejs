@@ -94,18 +94,14 @@
               <span>student</span>
             </li>
             <li>
-           
-
             <li>
               <a class="dropdown-item d-flex align-items-center" href="/logout">
                 <i class="bi bi-box-arrow-right"></i>
                 <span>Sign Out</span>
               </a>
             </li>
-
           </ul><!-- End Profile Dropdown Items -->
         </li><!-- End Profile Nav -->
-
       </ul>
     </nav><!-- End Icons Navigation -->
 
@@ -198,106 +194,25 @@
         </ol>
       </nav>
     </div><!-- End Page Title -->
-
     <section class="section dashboard">
-      <div class="row">
-
-        <!-- Left side columns -->
         <div class="col-lg-12 ">
-          <div class="row">
-
-            <!-- Sales Card -->
-            <div class="col-xxl-4 col-md-6">
-                <div class="card info-card revenue-card">
-                  <div class="card-body">
-                      <h5 class="card-title">Engineering</h5>
-                      <img src="/img/eng2.jpg" class="d-block w-100" style="height: 225px;" alt="">
-                  </div>
-                </div>
-              </div><!-- End Sales Card -->
-
-            <!-- Revenue Card -->
-           
-            <div class="col-xxl-4 col-md-6">
-              <div class="card info-card revenue-card">
-                <a href="/event_coding/coding/<%= user %>">
-                <div class="card-body">
-                    <h5 class="card-title">Coding</h5>
-                    <img src="/img/coding.jpeg" class="d-block w-100" alt="">
-                </div>
-              </a>
-              </div>
-            </div><!-- End Revenue Card -->
-
-            <!-- Customers Card -->
-            <div class="col-xxl-4 col-xl-12">
-
-              <div class="card info-card customers-card">
-                <div class="card-body">
-                    <h5 class="card-title">Management</h5>
-                    <img src="/img/management.jpg" class="d-block w-100" alt="">
-                </div>
-              </div>
-            </div><!-- End Customers Card -->
-          </div><!-- End Website Traffic -->
-        </div>
-
-        <div class="col-lg-12 ">
-            <div class="row">
-  
-              <!-- Sales Card -->
-              <div class="col-xxl-4 col-md-6">
-                <div class="card info-card sales-card">
-                  <div class="card-body">
-                      <h5 class="card-title">Quiz</h5>
-                      <img src="/img/quiz.webp" class="d-block w-100"  alt="">
-                  </div>
-                </div>
-              </div><!-- End Sales Card -->
-  
-              <!-- Revenue Card -->
-              <div class="col-xxl-4 col-md-6">
-                <div class="card info-card revenue-card">
-  
-                  <div class="card-body">
-                      <h5 class="card-title">Robotics</h5>
-                      <img src="/img/robitics.webp" class="d-block w-100" style="height: 225px;" alt="">
-                  </div>
-  
-                </div>
-              </div><!-- End Revenue Card -->
-  
-              <!-- Customers Card -->
-              <div class="col-xxl-4 col-xl-12">
-  
-                <div class="card info-card customers-card">
-                  <div class="card-body">
-                      <h5 class="card-title">Online</h5>
-                      <img src="/img/online.jpeg" class="d-block w-100"  alt="">
-                  </div>
-                </div>
-              </div><!-- End Customers Card -->
-            </div><!-- End Website Traffic -->
-          </div>
-
-
-          <div class="col-lg-12 ">
-            <div class="row">
+        <div class="row">
+            <% for(let i=0;i<data.length;i++){ %>
                 <div class="col-xxl-4 col-xl-12">
-  
                     <div class="card info-card customers-card">
+                        <a href="/event_details/<%= data[i]['eventname'] %>/<%= user %>">
                       <div class="card-body">
-                          <h5 class="card-title">Extravaganza</h5>
-                          <img src="/img/extra.webp" class="d-block w-100"  alt="">
+                          <h5 class="card-title"><%= data[i]['eventname'] %></h5>
+                          <img src="https://drive.google.com/uc?export=view&id=<%= data[i]['eventimg'] %>" width="150px" height="220px" class="d-block w-100" alt="">
                       </div>
+                    </a>
                     </div>
                   </div>
+                <% } %>
                 </div>
-                </div>
-
-      </div>
     </section>
 
+    
   </main><!-- End #main -->
   
 
@@ -332,6 +247,9 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js">
   </script>
 
+ 
+
 </body>
+
 
 </html>
