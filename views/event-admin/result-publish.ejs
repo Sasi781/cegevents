@@ -158,41 +158,24 @@
   <aside id="sidebar" class="sidebar">
 
     <ul class="sidebar-nav" id="sidebar-nav">
-
       <li class="nav-item">
-        <a class="nav-link " href="/adminMain">
+        <a class="nav-link " href="/EventDashboard/<%= user %>">
           <i class="bi bi-grid"></i>
           <span>Dashboard</span>
         </a>
       </li><!-- End Dashboard Nav -->
 
       <li class="nav-item">
-        <a class="nav-link collapsed"  href="/makeAttendence/<%= data[0]['eventID'] %>">
+        <a class="nav-link collapsed"  href="/makeAttendence/<%= data[0]['eventID'] %>/<%= user %>">
           <i class="bi bi-menu-button-wide"></i><span>Make Attendence</span></i>
         </a>
       </li><!-- End Components Nav -->
 
       <li class="nav-item">
-        <a class="nav-link collapsed" data-bs-target="#forms-nav" data-bs-toggle="collapse" href="#">
-          <i class="bi bi-journal-text"></i><span>Forms</span></i>
+        <a class="nav-link collapsed" href="/resultPublish/<%= data[0]['eventID'] %>/<%= user %>">
+          <i class="bi bi-journal-text"></i><span>Result Publish</span></i>
         </a>
-
-      <li class="nav-item">
-        <a class="nav-link collapsed" data-bs-target="#tables-nav" data-bs-toggle="collapse" href="#">
-          <i class="bi bi-layout-text-window-reverse"></i><span>Tables</span></i>
-        </a>
-    
-
-      <li class="nav-item">
-        <a class="nav-link collapsed" data-bs-target="#charts-nav" data-bs-toggle="collapse" href="#">
-          <i class="bi bi-bar-chart"></i><span>Charts</span></i>
-        </a>
-       
-
-      <li class="nav-item">
-        <a class="nav-link collapsed" data-bs-target="#icons-nav" data-bs-toggle="collapse" href="#">
-          <i class="bi bi-gem"></i><span>Icons</span></i>
-        </a>
+        </li>
 
       <li class="nav-heading">Pages</li>
 
@@ -212,13 +195,8 @@
   <main id="main" class="main">
     <a href="#"> <img src="/img/left-arrow.png" class="bx-pull-right"  width="40px" height="40px"></a>
     <div class="pagetitle">
-     <h1>Hostel</h1>
-      <nav>
-        <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="#">Home</a></li>
-          <li class="breadcrumb-item active">Add Students</li>
-        </ol>
-      </nav>
+     <h1>Event-Result Publish</h1>
+     
     </div><!-- End Page Title -->
     
     <section class="section dashboard">

@@ -290,6 +290,15 @@ app.get('/login',(req,res)=>{
 app.get('/original_register',(req,res)=>{
   res.render("original-register.ejs",{msg:""});
 })
+app.get('/EventDashboard/:email',(req,res)=>{
+  events.find( { $or: [ { email1: req.params.email   }, { email2: req.params.email  } ] } ,(err,doc)=>{
+    if(err) console.log(err)
+    else{
+      console.log(doc)
+      res.render("event-admin/event_index.ejs",{"user":req.params.email,data:doc})
+    }
+  })
+})
 app.post('/login',(req,res)=>{
   
   console.log(req.body)
@@ -433,7 +442,7 @@ app.post('/validate',(req,res)=>{
             }
             else{
               console.log(doc)
-              res.render("user-profile.ejs",{"data":doc,"msg":""})
+              res.render("user-profile.ejs",{"data":doc,"msg":"",user:req.session.email})
             }
           })
         }
@@ -537,9 +546,7 @@ app.get('/user-profile',(req,res)=>{
        console.log(err)
     }
     else{
-      console.log(doc)
-      
-    res.render("user-profile.ejs",{"data":doc,"msg":""})
+    res.render("user-profile.ejs",{"data":doc,"msg":"",user:doc[0]['email']})
 
       
     }
@@ -559,7 +566,7 @@ console.log("SESSION : "+ses.email)
       }
       else{
         console.log(doc)
-        res.render("user-profile.ejs",{"data":doc,"msg":"Password MisMatch"})
+        res.render("user-profile.ejs",{"data":doc,"msg":"Password MisMatch",user:req.session.email})
       }
     })
   }
@@ -580,7 +587,7 @@ console.log("SESSION : "+ses.email)
               }
               else{
                 console.log(doc)
-                res.render("user-profile.ejs",{"data":doc,"msg":"Updated Successfully"})
+                res.render("user-profile.ejs",{"data":doc,"msg":"Updated Successfully",user:req.session.email})
               }
             })
           }
@@ -593,7 +600,7 @@ console.log("SESSION : "+ses.email)
           }
           else{
             console.log("doc")
-            res.render("user-profile.ejs",{"data":doc,"msg":"Password Wrong"})
+            res.render("user-profile.ejs",{"data":doc,"msg":"Password Wrong",user:req.session.email})
           }
         })
       }
@@ -629,7 +636,7 @@ var q=url.parse(req.body.img,true)
       }
       else{
         console.log(doc)
-        res.render("user-profile.ejs",{"data":doc,"msg":"Profile Updated Successfully"})
+        res.render("user-profile.ejs",{"data":doc,"msg":"Profile Updated Successfully",user:req.session.email})
       }
     })
   }
@@ -1374,11 +1381,11 @@ app.get('/export',(req,res)=>{
     }
   })
 })
-app.get('/makeAttendence/:id',(req,res)=>{
+app.get('/makeAttendence/:id/:email',(req,res)=>{
   events.find({'eventID':req.params.id},(err,doc)=>{
     if(err) console.log(err)
     else{
-      res.render('event-admin/attendence.ejs',{data:doc})
+      res.render('event-admin/attendence.ejs',{data:doc,user:req.params.email})
     }
   })
 })
@@ -1417,7 +1424,7 @@ app.get('/makePresent/:id/:eventname',(req,res)=>{
         else{
           events.find({'eventID':req.params.eventname},(err,doc)=>{
             if(err) console.log(err)
-            else res.render('event-admin/attendence.ejs',{data:doc})
+            else res.render('event-admin/attendence.ejs',{data:doc,user:req.session.email})
           })
         }
       })
@@ -1504,7 +1511,7 @@ events.updateMany({eventID:req.body.eid},{$set:{attendence:list}},(err,doc)=>{
         events.find({'eventID':req.body.eid},(err,doc)=>{
           if(err) console.log(err)
           else{
-              respond.render('event-admin/result-publish.ejs',{data:doc,msg:'published'})
+              respond.render('event-admin/result-publish.ejs',{data:doc,msg:'published',user:req.session.email})
           }
         })
       }
@@ -1515,12 +1522,12 @@ events.updateMany({eventID:req.body.eid},{$set:{attendence:list}},(err,doc)=>{
 
 })
 
-app.get('/resultPublish/:id',(req,res)=>{
+app.get('/resultPublish/:id/:email',(req,res)=>{
   events.find({'eventID':req.params.id},(err,doc)=>{
     if(err) console.log(err)
     else{
-      if(doc[0]['result']) res.render('event-admin/result-publish.ejs',{data:doc,msg:'published'})
-      else res.render('event-admin/result-publish.ejs',{data:doc,msg:''})
+      if(doc[0]['result']) res.render('event-admin/result-publish.ejs',{data:doc,msg:'published',user:req.session.email})
+      else res.render('event-admin/result-publish.ejs',{data:doc,msg:'',user:req.params.email})
     }
   })
 })
@@ -1738,7 +1745,7 @@ app.get('/adminUser',(req,res)=>{
     })
   }
   else{
-    // res.render("register.ejs",{"msg":""})
+    res.render("register.ejs",{"msg":""})
   }
 
   });
@@ -1782,7 +1789,7 @@ app.get('/hostel-students',(req,res)=>{
 })
 
 app.get('/events-display/:ID',(req,res)=>{
-   console.log(req.params.ID)
+   console.log("kathir : "+req.params.ID)
    res.render("events_display.ejs",{"user":req.params.ID})
 })
 
@@ -1968,6 +1975,7 @@ app.get('/participated_events/:user',(req,res)=>{
   details.find({email:req.params.user},(err,doc)=>{
     if(err) console.log(err)
     else{
+     if(doc[0]['attended_events']){
       keys=Object.keys(doc[0]['attended_events']);
       console.log(keys)
       for(let i=0;i<keys.length;i++){
@@ -1980,6 +1988,10 @@ app.get('/participated_events/:user',(req,res)=>{
           }
          })
       }
+     }
+     else{
+      res.render('participated_events.ejs',{user:req.params.user,list:pair})
+     }
     }
   })
 
